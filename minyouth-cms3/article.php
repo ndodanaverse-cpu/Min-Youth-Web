@@ -1,0 +1,439 @@
+<?php
+require_once __DIR__ . '/includes/lang.php';
+require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/functions.php';
+
+$pdo = get_db();
+$slug = $_GET['slug'] ?? '';
+$stmt = $pdo->prepare("SELECT n.*, u.full_name AS author_name FROM news n JOIN users u ON u.id = n.author_id WHERE n.slug = ? AND n.status = 'published'");
+$stmt->execute([$slug]);
+$article = $stmt->fetch();
+
+// Apply translation overrides if a non-English language is active
+if ($article) {
+    foreach (['title','excerpt','body'] as $f) {
+        $tr = get_translation($pdo, 'news', (int)$article['id'], $f);
+        if ($tr !== null) $article[$f] = $tr;
+    }
+}
+
+if ($article) {
+    // Content translation
+    $_lang = $GLOBALS['current_lang'] ?? 'en';
+    if ($_lang !== 'en') {
+        $_ts = $pdo->prepare("SELECT field_name,field_value FROM content_translations WHERE content_type='news' AND content_id=? AND language=?");
+        $_ts->execute([$article['id'], $_lang]);
+        foreach($_ts->fetchAll() as $_t) $article[$_t['field_name']] = $_t['field_value'];
+    }
+    foreach (['title', 'excerpt', 'body'] as $field) {
+        $article[$field] = localized_content_value($article[$field] ?? '');
+    }
+    $related = $pdo->prepare("SELECT * FROM news WHERE status='published' AND id != ? ORDER BY published_at DESC LIMIT 3");
+    $related->execute([$article['id']]);
+    $relatedItems = $related->fetchAll();
+}
+?>
+
+<?php
+require_once __DIR__ . '/includes/lang.php';
+require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/functions.php';
+
+$pdo = get_db();
+$newsItems = $pdo->query(
+    "SELECT * FROM news WHERE status = 'published' ORDER BY published_at DESC, created_at DESC"
+)->fetchAll();
+?>
+
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="<?= e($GLOBALS['current_lang'] ?? 'en') ?>"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<!-- Standard Favicon for Browser Tabs (ICO file) -->
+<link rel="icon" type="image/x-icon" href="assets/icon.png">
+
+<!-- Modern, High-Quality Icon for Modern Browsers (PNG file) -->
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icon.png">
+
+<!-- Apple Touch Icon for iOS Devices (iPhones/iPads) -->
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icon.png">
+
+<!-- Android/Chrome Web App Manifest -->
+<link rel="manifest" href="assets/site.webmanifest">
+<title><?= __('home_news_title') ?> | <?= __('site_title') ?></title>
+<link href="assets/logo.png" rel="icon" type="image/png"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#f3f0ef",
+                        "background": "#fcf9f8",
+                        "on-surface-variant": "#3e4a41",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f6f3f2",
+                        "tertiary-fixed": "#ffdad6",
+                        "surface-container-high": "#eae7e7",
+                        "on-primary-fixed-variant": "#00522f",
+                        "primary-fixed": "#8df8b7",
+                        "on-secondary-container": "#6e5c00",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#002110",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface-bright": "#fcf9f8",
+                        "on-surface": "#1c1b1b",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#93000d",
+                        "on-background": "#1c1b1b",
+                        "surface-container": "#f0eded",
+                        "surface": "#fcf9f8",
+                        "on-secondary-fixed-variant": "#544600",
+                        "secondary-fixed-dim": "#e9c400",
+                        "primary-container": "#008000",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#bdcabe",
+                        "secondary-fixed": "#ffe16d",
+                        "outline": "#6e7a70",
+                        "surface-variant": "#e5e2e1",
+                        "surface-tint": "#008000",
+                        "on-tertiary-fixed": "#410002",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#fcd400",
+                        "tertiary-fixed-dim": "#ffb4ac",
+                        "primary-fixed-dim": "#70db9d",
+                        "on-primary-container": "#fdfff9",
+                        "inverse-surface": "#313030",
+                        "tertiary": "#bd0014",
+                        "primary": "#008000",
+                        "on-secondary-fixed": "#221b00",
+                        "tertiary-container": "#e61e25",
+                        "on-tertiary-container": "#fffdff",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#70db9d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "md": "24px",
+                        "margin-mobile": "16px",
+                        "xs": "4px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "lg": "48px",
+                        "xl": "80px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Poppins"],
+                        "label-md": ["Poppins"],
+                        "label-sm": ["Poppins"],
+                        "body-lg": ["Poppins"],
+                        "title-lg": ["Poppins"],
+                        "display-lg": ["Poppins"],
+                        "headline-lg-mobile": ["Poppins"],
+                        "body-md": ["Poppins"],
+                        "headline-md": ["Poppins"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .news-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .news-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .animate-fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+        .animate-fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hover-lift {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        /* Full-screen mobile menu overlay */
+        #mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fcf9f8;
+            z-index: 999;
+            transform: translateX(-100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            padding-top: 80px;
+        }
+        #mobile-menu.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface docked full-width top-0 sticky border-b border-outline-variant shadow-sm z-50 transition-all duration-300">
+<nav class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-base w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-base">
+<img alt="Zimbabwe Government Logo" class="h-8 md:h-16 w-auto transition-transform hover:scale-105" src="assets/logo.png"/>
+</div>
+<div class="hidden md:flex items-center gap-md">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="index.php">
+                Home
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="about.php">
+<?= __('nav_about') ?>
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="departments.php">
+<?= __('nav_departments') ?>
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+</a>
+<div class="relative group">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative py-1 inline-flex items-center gap-1" href="resources.php">
+<?= __('nav_resources') ?> <span aria-hidden="true">&#9662;</span>
+</a>
+<div class="absolute left-0 top-full hidden min-w-36 pt-2 group-hover:block group-focus-within:block">
+<a class="block bg-surface px-md py-sm text-on-surface-variant font-medium shadow-lg hover:bg-surface-container-high hover:text-primary" href="gallery.php"><?= __('nav_gallery') ?></a>
+</div>
+</div>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 transition-colors" href="news.php" style="color: #008000;"><?= __('nav_news') ?></a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="contact.php">
+<?= __('nav_contact') ?>
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+</a>
+</div>
+<div class="hidden md:flex items-center gap-base">
+<a href="http://127.0.0.1:8000" target="_blank" rel="noopener noreferrer" class="bg-primary text-on-primary font-label-md px-md py-xs rounded-lg hover:shadow-lg transition-all active:scale-95 whitespace-nowrap inline-flex items-center justify-center" style="background-color: #008000;">
+<?= __('nav_apply') ?>
+        </a>
+</div>
+<?php echo lang_switcher_html('hidden md:flex'); ?>
+<button id="menu-toggle" class="md:hidden flex flex-col gap-1 p-2 hover:bg-surface-container rounded-lg transition-colors z-[1000] relative" aria-label="Toggle menu">
+<span class="w-6 h-0.5 bg-on-surface transition-all"></span>
+<span class="w-6 h-0.5 bg-on-surface transition-all"></span>
+<span class="w-6 h-0.5 bg-on-surface transition-all"></span>
+</button>
+</nav>
+</header>
+<!-- Full-screen mobile menu -->
+<div id="mobile-menu" aria-hidden="true">
+<div class="px-margin-mobile py-base space-y-base max-w-7xl mx-auto">
+<a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="index.php"><?= __('nav_home') ?></a>
+<a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="about.php"><?= __('nav_about') ?></a>
+<a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="departments.php"><?= __('nav_departments') ?></a>
+<details class="group">
+<summary class="cursor-pointer list-none block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all"><?= __('nav_resources') ?> <span aria-hidden="true">&#9662;</span></summary>
+<a class="ml-md block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="gallery.php"><?= __('nav_gallery') ?></a>
+<a class="ml-md block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="resources.php"><?= __('nav_resources') ?></a>
+</details>
+<a class="block text-primary font-bold py-sm px-sm rounded-lg transition-all" href="news.php" style="color: #008000;"><?= __('nav_news') ?></a>
+<a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="contact.php"><?= __('nav_contact') ?></a>
+<a href="http://127.0.0.1:8000" target="_blank" rel="noopener noreferrer" class="w-full bg-primary text-on-primary font-label-md px-md py-sm rounded-lg hover:shadow-lg transition-all active:scale-95 inline-flex items-center justify-center text-center" style="background-color: #008000;">
+<?= __('nav_apply') ?>
+        </a>
+</div>
+</div>
+<!-- Article -->
+<?php if (!$article): ?>
+<main class="w-full max-w-3xl mx-auto px-margin-mobile md:px-margin-desktop py-xl text-center">
+  <span class="material-symbols-outlined text-6xl text-outline mb-4 block">search_off</span>
+  <h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Article not found</h1>
+  <p class="text-on-surface-variant mb-6">This article may have been unpublished or the link is incorrect.</p>
+  <a href="news.php" class="inline-block bg-primary text-on-primary px-6 py-2 rounded-lg font-bold hover:opacity-90">&larr; ><?= __("back_to_news") ?></a>
+</main>
+<?php else: ?>
+<main class="w-full">
+  <section class="relative h-72 md:h-96 w-full overflow-hidden flex items-end">
+    <img alt="<?= e($article['title']) ?>" class="absolute inset-0 w-full h-full object-cover brightness-50" src="<?= e($article['image'] ?: 'assets/news/aboutus-home.webp') ?>"/>
+    <div class="relative z-10 w-full max-w-4xl mx-auto px-margin-mobile md:px-margin-desktop pb-lg">
+      <a href="news.php" class="inline-flex items-center gap-1 text-white/90 hover:text-white text-sm mb-3"><span class="material-symbols-outlined text-[18px]">arrow_back</span> Back to News</a>
+      <h1 class="font-display-lg text-display-lg text-white text-shadow-sm leading-tight"><?= e($article['title']) ?></h1>
+      <p class="text-white/80 mt-3 text-sm"><?= e(date('F j, Y', strtotime($article['published_at'] ?: $article['created_at']))) ?> &middot; By <?= e($article['author_name']) ?></p>
+    </div>
+  </section>
+
+  <article class="w-full max-w-3xl mx-auto px-margin-mobile md:px-margin-desktop py-xl">
+    <?php if ($article['excerpt']): ?>
+      <p class="text-lg text-on-surface-variant font-medium mb-lg leading-relaxed"><?= e($article['excerpt']) ?></p>
+    <?php endif; ?>
+    <div class="prose max-w-none text-on-surface text-body-lg leading-relaxed whitespace-pre-line">
+      <?= e($article['body']) ?>
+    </div>
+  </article>
+
+  <?php if (!empty($relatedItems)): ?>
+  <section class="bg-surface-container py-xl">
+    <div class="max-w-5xl mx-auto px-margin-mobile md:px-margin-desktop">
+      <h2 class="font-headline-md text-headline-md text-on-surface mb-lg"><?= __("more_news") ?></h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+        <?php foreach ($relatedItems as $r): ?>
+          <a href="article.php?slug=<?= e($r['slug']) ?>" class="block bg-white rounded-lg border border-outline-variant overflow-hidden hover:shadow-md transition">
+            <div class="h-36 overflow-hidden"><img class="w-full h-full object-cover" src="<?= e($r['image'] ?: 'assets/news/aboutus-home.webp') ?>" alt="<?= e($r['title']) ?>"></div>
+            <div class="p-4"><h3 class="font-semibold text-sm text-on-surface line-clamp-2"><?= e(localized_content_value($r['title'])) ?></h3></div>
+          </a>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </section>
+  <?php endif; ?>
+</main>
+<?php endif; ?>
+<!-- Footer -->
+<footer class="bg-[#008000] text-on-primary">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg px-margin-mobile lg:px-margin-desktop py-xl w-full max-w-7xl mx-auto align-middle">
+<!-- Brand & Contact -->
+<div class="flex flex-col gap-md">
+<div class="flex items-center gap-sm">
+<img alt="Zimbabwe Coat of Arms" class="h-14 md:h-20 w-auto object-contain invert brightness-0" src="assets/logo.png"/>
+</div>
+<div class="space-y-sm">
+<p class="font-body-md opacity-90">11th Floor Central House, Central Avenue, Harare, Zimbabwe</p>
+<div class="flex items-center gap-base opacity-90">
+<span class="material-symbols-outlined text-sm">mail</span>
+<span>info@youth.gov.zw</span>
+</div>
+<div class="flex items-center gap-base opacity-90">
+<span class="material-symbols-outlined text-sm">call</span>
+<span>+263 242 707741</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-md mt-base">
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="Facebook">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="X (Twitter)">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="Instagram">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="LinkedIn">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+</a>
+</div>
+</div>
+<!-- Quick Links -->
+<div class="flex flex-col gap-md">
+<span class="font-title-lg text-title-lg border-b border-white/20 pb-base"><?= __('footer_quick_links') ?></span>
+<div class="flex flex-col gap-sm">
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="index.php"><?= __('nav_home') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="about.php"><?= __('nav_about') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="departments.php"><?= __('nav_departments') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="gallery.php"><?= __('nav_gallery') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="resources.php"><?= __('nav_resources') ?></a>
+<a class="text-on-primary font-bold underline" href="news.php"><?= __('nav_news') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="contact.php"><?= __('nav_contact') ?></a>
+</div>
+</div>
+<!-- Resources -->
+<div class="flex flex-col gap-md">
+<span class="font-title-lg text-title-lg border-b border-white/20 pb-base"><?= __('footer_resources') ?></span>
+<div class="flex flex-col gap-sm">
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#"><?= __('footer_nat_policy') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#"><?= __('footer_strat_plan') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#"><?= __('footer_vtc_forms') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#"><?= __('footer_annual_rep') ?></a>
+</div>
+</div>
+<!-- Newsletter -->
+<div class="flex flex-col gap-md">
+<span class="font-title-lg text-title-lg border-b border-white/20 pb-base"><?= __('footer_newsletter') ?></span>
+<p class="text-sm opacity-90"><?= __('footer_newsletter_sub') ?></p>
+<div class="flex flex-col gap-base">
+<input class="bg-white/10 border border-white/20 rounded-lg px-md py-sm text-white placeholder:text-white/40 focus:ring-primary-fixed focus:border-primary-fixed transition-all" placeholder="<?= __('footer_email_ph') ?>" type="email"/>
+<button class="bg-[#ccffba] text-[#002200] font-bold py-sm rounded-lg hover:brightness-110 active:scale-95 transition-all"><?= __('footer_subscribe') ?></button>
+</div>
+</div>
+</div>
+<!-- Copyright -->
+<div class="border-t border-white/10 py-md text-center text-on-primary/60 font-label-sm">
+        Copyright &copy; 2025 Ministry of Youth Empowerment. All rights reserved.
+    </div>
+</footer>
+
+
+<script>
+    // Full-screen mobile menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let menuOpen = false;
+
+    menuToggle.addEventListener('click', function() {
+        menuOpen = !menuOpen;
+        mobileMenu.classList.toggle('open', menuOpen);
+        mobileMenu.setAttribute('aria-hidden', !menuOpen);
+        document.body.style.overflow = menuOpen ? 'hidden' : '';
+        const spans = this.querySelectorAll('span');
+        spans[0].style.transform = menuOpen ? 'rotate(45deg) translateY(8px)' : '';
+        spans[1].style.opacity = menuOpen ? '0' : '1';
+        spans[2].style.transform = menuOpen ? 'rotate(-45deg) translateY(-8px)' : '';
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            menuOpen = false;
+            mobileMenu.classList.remove('open');
+            mobileMenu.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            const spans = menuToggle.querySelectorAll('span');
+            spans[0].style.transform = '';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = '';
+        });
+    });
+
+    // Sticky header effect
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+            header.classList.add('py-2', 'shadow-lg', 'bg-white/95', 'backdrop-blur-md');
+        } else {
+            header.classList.remove('py-2', 'shadow-lg', 'bg-white/95', 'backdrop-blur-md');
+        }
+    });
+</script>
+<script src="assets/js/minyouth-widget.js?v=20260820b" defer></script>
+<script src="assets/js/site-nav.js"></script>
+</body></html>

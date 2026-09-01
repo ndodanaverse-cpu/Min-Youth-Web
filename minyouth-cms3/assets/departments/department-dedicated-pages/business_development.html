@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<!-- Standard Favicon for Browser Tabs (ICO file) -->
+<link rel="icon" type="image/x-icon" href="assets/department/department-dedicated-pages/icon.png">
+
+<!-- Modern, High-Quality Icon for Modern Browsers (PNG file) -->
+<link rel="icon" type="image/png" sizes="32x32" href="assets/department/department-dedicated-pages/icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/department/department-dedicated-pages/icon.png">
+
+<!-- Apple Touch Icon for iOS Devices (iPhones/iPads) -->
+<link rel="apple-touch-icon" sizes="180x180" href="assets/department/department-dedicated-pages/icon.png">
+
+<!-- Android/Chrome Web App Manifest -->
+<link rel="manifest" href="assets/departments/department-dedicated-pages/site.webmanifest">
+<title>Youth Empowerment &amp; Development | NYP</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Poppins -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+                                "colors": {
+                        "inverse-on-surface": "#f3f0ef",
+                        "background": "#fcf9f8",
+                        "on-surface-variant": "#3e4a41",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f6f3f2",
+                        "tertiary-fixed": "#ffdad6",
+                        "surface-container-high": "#eae7e7",
+                        "on-primary-fixed-variant": "#00522f",
+                        "primary-fixed": "#8df8b7",
+                        "on-secondary-container": "#6e5c00",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#002110",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface-bright": "#fcf9f8",
+                        "on-surface": "#1c1b1b",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#93000d",
+                        "on-background": "#1c1b1b",
+                        "surface-container": "#f0eded",
+                        "surface": "#fcf9f8",
+                        "on-secondary-fixed-variant": "#544600",
+                        "secondary-fixed-dim": "#e9c400",
+                        "primary-container": "#008000",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#bdcabe",
+                        "secondary-fixed": "#ffe16d",
+                        "outline": "#6e7a70",
+                        "surface-variant": "#e5e2e1",
+                        "surface-tint": "#008000",
+                        "on-tertiary-fixed": "#410002",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#fcd400",
+                        "tertiary-fixed-dim": "#ffb4ac",
+                        "primary-fixed-dim": "#70db9d",
+                        "on-primary-container": "#fdfff9",
+                        "inverse-surface": "#313030",
+                        "tertiary": "#bd0014",
+                        "primary": "#008000",
+                        "on-secondary-fixed": "#221b00",
+                        "tertiary-container": "#e61e25",
+                        "on-tertiary-container": "#fffdff",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#70db9d"
+                    },
+                                "spacing": {
+                        "sm": "12px",
+                        "md": "24px",
+                        "margin-mobile": "16px",
+                        "xs": "4px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "lg": "48px",
+                        "xl": "80px",
+                        "margin-desktop": "64px"
+                    },
+            "fontFamily": {
+                "label-md": ["Poppins"],
+                "headline-lg-mobile": ["Poppins"],
+                "body-lg": ["Poppins"],
+                "label-sm": ["Poppins"],
+                "body-md": ["Poppins"],
+                "headline-md": ["Poppins"],
+                "headline-xl": ["Poppins"],
+                "headline-lg": ["Poppins"],
+                "headline-xl-mobile": ["Poppins"]
+            },
+            "fontSize": {
+                "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                "headline-xl-mobile": ["30px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .bento-card {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .bento-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px -10px rgba(0, 100, 0, 0.15);
+        }
+        .breadcrumb-separator::after {
+            content: 'chevron_right';
+            font-family: 'Material Symbols Outlined';
+            font-size: 14px;
+            margin: 0 8px;
+            color: #6f7a69;
+        }
+            /* Full-screen mobile menu overlay */
+        #mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fcf9f8;
+            z-index: 999;
+            transform: translateX(-100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            padding-top: 80px;
+        }
+        #mobile-menu.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<header class="bg-surface docked full-width top-0 sticky border-b border-outline-variant shadow-sm z-50 transition-all duration-300">
+<nav class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-base w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-base">
+<img alt="Zimbabwe Government Logo" class="h-8 md:h-16 w-auto transition-transform hover:scale-105" src="../../../assets/logo.png"/>
+</div>
+<div class="hidden md:flex items-center gap-md">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="../../../index.php">
+                Home
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="../../../about.php">
+                About
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 transition-colors" href="../../../departments.php" style="color: #008000;">Departments</a>
+<div class="relative group">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative py-1 inline-flex items-center gap-1" href="../../../resources.php">
+                Resources <span aria-hidden="true">&#9662;</span>
+</a>
+<div class="absolute left-0 top-full hidden min-w-36 pt-2 group-hover:block group-focus-within:block">
+<a class="block bg-surface px-md py-sm text-on-surface-variant font-medium shadow-lg hover:bg-surface-container-high hover:text-primary" href="../../../gallery.php">Gallery</a>
+</div>
+</div>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="../../../news.php">
+                News
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="../../../contact.php">
+                Contact Us
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+</a>
+</div>
+<div class="hidden md:flex items-center gap-base">
+<a href="http://127.0.0.1:8000" target="_blank" rel="noopener noreferrer" class="bg-primary text-on-primary font-label-md px-md py-xs rounded-lg hover:shadow-lg transition-all active:scale-95 whitespace-nowrap inline-flex items-center justify-center" style="background-color: #008000;">
+            Portal
+        </a>
+</div>
+<button id="menu-toggle" class="md:hidden flex flex-col gap-1 p-2 hover:bg-surface-container rounded-lg transition-colors z-[1000] relative" aria-label="Toggle menu">
+<span class="w-6 h-0.5 bg-on-surface transition-all"></span>
+<span class="w-6 h-0.5 bg-on-surface transition-all"></span>
+<span class="w-6 h-0.5 bg-on-surface transition-all"></span>
+</button>
+</nav>
+</header>
+<!-- Full-screen mobile menu -->
+<div id="mobile-menu" aria-hidden="true">
+<div class="px-margin-mobile py-base space-y-base max-w-7xl mx-auto">
+<a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="../../../index.php">Home</a>
+<a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="../../../about.php">About</a>
+<a class="block text-primary font-bold py-sm px-sm rounded-lg transition-all" href="../../../departments.php" style="color: #008000;">Departments</a>
+<details class="group">
+<summary class="cursor-pointer list-none block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all">Resources <span aria-hidden="true">&#9662;</span></summary>
+<a class="ml-md block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="../../../gallery.php">Gallery</a>
+<a class="ml-md block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="../../../resources.php">Resources</a>
+</details>
+<a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="../../../news.php">News</a>
+<a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="../../../contact.php">Contact Us</a>
+<a href="http://127.0.0.1:8000" target="_blank" rel="noopener noreferrer" class="w-full bg-primary text-on-primary font-label-md px-md py-sm rounded-lg hover:shadow-lg transition-all active:scale-95 inline-flex items-center justify-center text-center" style="background-color: #008000;">
+            Portal
+        </a>
+</div>
+</div>
+<main>
+<!-- Hero Section -->
+<section class="relative h-[450px] flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-black/60 z-10"></div>
+<img class="w-full h-full object-cover" data-alt="A wide cinematic shot of diverse African youth standing together in a sunny field, smiling and engaged in a collaborative community project. The lighting is warm and golden, reflecting a mood of optimism, growth, and national pride. The visual style is high-end documentary photography with a soft focus on the background to emphasize the subjects." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdfD-MVLMSBOKmeHdGgD0UZvAto_nVP35HklaKHp7yycUw6V4C_EQOy4Ujm53vvcTINAXDg5TJ89iCSVesHSJfATgUGVCucM9PSB0eVs_uNX9GH3LTm-k2PebrzZ-2x74tuAbJniMUYtNg4a7eSOsg8xqTtIBKCsMzDhjqYyLfQilUKAEUHZ8gjhrJA4wUy7pXlNcyGJrLzqHAwNQ_iX1865tUkpGhXgV-S0v-Ive8rKUXsjBZhROy29rYNiJLJNY2s-LJo9v4BqA"/>
+</div>
+<div class="relative z-20 max-w-7xl mx-auto px-margin-desktop w-full text-white">
+<nav class="flex items-center text-label-md font-label-md mb-md opacity-90">
+<a class="hover:underline" href="#">Home</a>
+<span class="breadcrumb-separator"></span>
+<a class="hover:underline" href="#">Departments</a>
+<span class="breadcrumb-separator"></span>
+<span class="font-bold">Youth Empowerment &amp; Development</span>
+</nav>
+<h1 class="font-headline-xl text-headline-xl mb-md max-w-3xl leading-tight">
+                    Youth Empowerment &amp; Development
+                </h1>
+<p class="font-body-lg text-body-lg max-w-2xl text-white/90">
+                    Empowering the next generation by formulating and implementing policies, programmes, and projects that inspire growth, leadership, and active participation in nation-building.
+                </p>
+</div>
+</section>
+<!-- Functions Grid Section -->
+<section class="py-xl bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-margin-desktop">
+<div class="text-center mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-sm">Our Strategic Mandates</h2>
+<div class="w-16 h-1.5 bg-primary mx-auto rounded-full"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Policy Formulation -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">description</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Policy Formulation</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Formulate, implement, monitor, and evaluate youth development policies, programmes, and projects for sustainable development.
+                        </p>
+</div>
+<!-- Mainstreaming -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">diversity_3</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Mainstreaming</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Establish mechanisms to integrate youth development into national policies and programmes, ensuring inclusivity across all sectors.
+                        </p>
+</div>
+<!-- Leadership Participation -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">leaderboard</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Leadership Participation</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Promote active youth participation in leadership and decision-making processes to shape a better, more representative future.
+                        </p>
+</div>
+<!-- Exchange Programmes -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">public</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Exchange Programmes</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Facilitate opportunities for youth to engage in exchange programmes locally, regionally, and internationally for cross-cultural growth.
+                        </p>
+</div>
+<!-- Coordination -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">hub</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Coordination</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Coordinate youth development initiatives and programmes across public and private sectors for cohesive and sustainable impact.
+                        </p>
+</div>
+<!-- Opportunities -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">lightbulb</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Opportunities</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Collaborate with stakeholders to create diverse opportunities for youth development, skill acquisition, and socioeconomic empowerment.
+                        </p>
+</div>
+<!-- Peace Building -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">volunteer_activism</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Peace Building</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Strengthen youth participation in peace-building efforts to foster harmony, tolerance, and lasting societal cohesion.
+                        </p>
+</div>
+<!-- Collaboration -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">handshake</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Collaboration</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Work with national, regional, and international agencies to enhance youth development programmes through shared expertise.
+                        </p>
+</div>
+<!-- Policy Mobilisation -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">groups_2</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Policy Mobilisation</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Mobilise youth to actively participate in ministry and youth-related programmes for holistic personal and national growth.
+                        </p>
+</div>
+<!-- Regional Conventions (Full width on md+ if grid allows or last item) -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group lg:col-span-1">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">assured_workload</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Regional Conventions</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Domesticate regional conventions such as the African Youth Charter and the SADC Declaration for youth empowerment.
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Decorative Section with Call to Action -->
+<section class="relative py-xl overflow-hidden bg-primary overflow-hidden">
+
+<div class="relative z-10 max-w-7xl mx-auto px-margin-desktop text-center text-white">
+<h2 class="font-headline-lg text-headline-lg mb-md">Ready to join our initiatives?</h2>
+<p class="font-body-lg text-body-lg mb-lg max-w-2xl mx-auto opacity-90">
+                    Discover how you can be part of the change. Our programs are designed to provide the tools you need for a successful future.
+                </p>
+<div class="flex flex-wrap justify-center gap-md">
+<button class="bg-white text-primary px-xl py-md font-label-md text-label-md rounded-full font-bold shadow-lg hover:bg-surface-variant transition-all">
+                        Register for Programs
+                    </button>
+<button class="border-2 border-white text-white px-xl py-md font-label-md text-label-md rounded-full font-bold hover:bg-white/10 transition-all">
+                        Download Resources
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#008000] text-on-primary">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg px-margin-mobile lg:px-margin-desktop py-xl w-full max-w-7xl mx-auto align-middle">
+<!-- Brand & Contact -->
+<div class="flex flex-col gap-md">
+<div class="flex items-center gap-sm">
+<img alt="Zimbabwe Coat of Arms" class="h-14 md:h-20 w-auto object-contain invert brightness-0" src="../../../assets/logo.png"/>
+</div>
+<div class="space-y-sm">
+<p class="font-body-md opacity-90">11th Floor Central House, Central Avenue, Harare, Zimbabwe</p>
+<div class="flex items-center gap-base opacity-90">
+<span class="material-symbols-outlined text-sm">mail</span>
+<span>info@youth.gov.zw</span>
+</div>
+<div class="flex items-center gap-base opacity-90">
+<span class="material-symbols-outlined text-sm">call</span>
+<span>+263 242 707741</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-md mt-base">
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="Facebook">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="X (Twitter)">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="Instagram">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="LinkedIn">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+</a>
+</div>
+</div>
+<!-- Quick Links -->
+<div class="flex flex-col gap-md">
+<span class="font-title-lg text-title-lg border-b border-white/20 pb-base">Quick Links</span>
+<div class="flex flex-col gap-sm">
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="../../../index.php">Home</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="../../../about.php">About Us</a>
+<a class="text-on-primary font-bold underline" href="../../../departments.php">Departments</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="../../../gallery.php">Gallery</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="../../../resources.php">Resources</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="../../../news.php">News</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="../../../contact.php">Contact Us</a>
+</div>
+</div>
+<!-- Resources -->
+<div class="flex flex-col gap-md">
+<span class="font-title-lg text-title-lg border-b border-white/20 pb-base">Resources</span>
+<div class="flex flex-col gap-sm">
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#">National Youth Policy</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#">Strategic Plan 2024-2030</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#">VTC Enrollment Forms</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#">Annual Reports</a>
+</div>
+</div>
+<!-- Newsletter -->
+<div class="flex flex-col gap-md">
+<span class="font-title-lg text-title-lg border-b border-white/20 pb-base">Newsletter</span>
+<p class="text-sm opacity-90">Stay updated with the latest youth empowerment programs and events.</p>
+<div class="flex flex-col gap-base">
+<input class="bg-white/10 border border-white/20 rounded-lg px-md py-sm text-white placeholder:text-white/40 focus:ring-primary-fixed focus:border-primary-fixed transition-all" placeholder="Email Address" type="email"/>
+<button class="bg-[#ccffba] text-[#002200] font-bold py-sm rounded-lg hover:brightness-110 active:scale-95 transition-all">Subscribe</button>
+</div>
+</div>
+</div>
+<!-- Copyright -->
+<div class="border-t border-white/10 py-md text-center text-on-primary/60 font-label-sm">
+        Copyright &copy; 2025 Ministry of Youth Empowerment. All rights reserved.
+    </div>
+</footer>
+<script>
+    // Full-screen mobile menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let menuOpen = false;
+
+    menuToggle.addEventListener('click', function() {
+        menuOpen = !menuOpen;
+        mobileMenu.classList.toggle('open', menuOpen);
+        mobileMenu.setAttribute('aria-hidden', !menuOpen);
+        document.body.style.overflow = menuOpen ? 'hidden' : '';
+        const spans = this.querySelectorAll('span');
+        spans[0].style.transform = menuOpen ? 'rotate(45deg) translateY(8px)' : '';
+        spans[1].style.opacity = menuOpen ? '0' : '1';
+        spans[2].style.transform = menuOpen ? 'rotate(-45deg) translateY(-8px)' : '';
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            menuOpen = false;
+            mobileMenu.classList.remove('open');
+            mobileMenu.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            const spans = menuToggle.querySelectorAll('span');
+            spans[0].style.transform = '';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = '';
+        });
+    });
+
+    // Sticky header effect
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+            header.classList.add('py-2', 'shadow-lg', 'bg-white/95', 'backdrop-blur-md');
+        } else {
+            header.classList.remove('py-2', 'shadow-lg', 'bg-white/95', 'backdrop-blur-md');
+        }
+    });
+</script>
+<script src="../../../assets/js/site-nav.js"></script>
+</body></html>

@@ -1,0 +1,677 @@
+<?php
+require_once __DIR__ . '/includes/lang.php';
+require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/functions.php';
+
+$_lang = $GLOBALS['current_lang'] ?? 'en';
+$_gtrans = [];
+$galleryItems = [];
+try {
+    $pdo = get_db();
+    if ($_lang !== 'en') {
+        $_ts = $pdo->prepare("SELECT content_id,field_name,field_value FROM content_translations WHERE content_type='gallery_items' AND language=?");
+        $_ts->execute([$_lang]);
+        foreach($_ts->fetchAll() as $_t) $_gtrans[$_t['content_id']][$_t['field_name']] = $_t['field_value'];
+    }
+    $galleryItems = $pdo->query(
+        "SELECT g.*, u.full_name AS author_name FROM gallery_items g JOIN users u ON u.id = g.author_id WHERE g.status = 'published' ORDER BY g.created_at DESC"
+    )->fetchAll();
+} catch (\Throwable $e) {
+    // Database connection optional during static export or when offline
+}
+
+$catMeta = [
+    'exhibitions' => ['label' => 'Exhibitions',         'badge' => 'bg-[#008000]',  'text' => 'text-[#008000]'],
+    'youth-day'   => ['label' => 'National Youth Day',  'badge' => 'bg-amber-500',  'text' => 'text-amber-600'],
+    'vtc'         => ['label' => 'VTC',                 'badge' => 'bg-blue-600',   'text' => 'text-blue-600'],
+    'ysz'         => ['label' => 'YSZ',                 'badge' => 'bg-purple-600', 'text' => 'text-purple-600'],
+    'videos'      => ['label' => 'Video',               'badge' => 'bg-red-600',    'text' => 'text-red-600'],
+];
+$thumbHeights = [220, 260, 300, 240, 280];
+?>
+
+<!DOCTYPE html>
+<html class="light" lang="<?= e($GLOBALS['current_lang'] ?? 'en') ?>"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="icon" type="image/x-icon" href="assets/icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icon.png">
+<link rel="manifest" href="assets/site.webmanifest">
+<title><?= __('home_gallery_heading') ?> | <?= __('site_title') ?></title>
+<meta name="description" content="Explore the Ministry of Youth Empowerment's gallery of events, programs, exhibitions, and vocational training activities across Zimbabwe."/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "inverse-primary": "#72de5e","background": "#f9f9ff","primary-fixed-dim": "#72de5e",
+          "outline": "#6f7a69","tertiary-container": "#677069","surface-dim": "#d3daea",
+          "on-surface": "#151c27","secondary-container": "#e2dfe0","surface-container-lowest": "#ffffff",
+          "secondary": "#5f5e5f","on-secondary-fixed": "#1b1b1c","on-tertiary-fixed": "#151d18",
+          "on-primary-fixed-variant": "#005300","error-container": "#ffdad6","surface-tint": "#006e00",
+          "surface-container": "#e7eefe","secondary-fixed": "#e5e2e3","on-error": "#ffffff",
+          "surface-container-low": "#f0f3ff","surface-container-high": "#e2e8f8","surface-variant": "#dce2f3",
+          "on-surface-variant": "#3f4a3a","primary-fixed": "#8dfb77","on-primary-container": "#ccffba",
+          "surface-bright": "#f9f9ff","on-tertiary-fixed-variant": "#404943","inverse-on-surface": "#ebf1ff",
+          "surface-container-highest": "#dce2f3","on-background": "#151c27","inverse-surface": "#2a313d",
+          "on-secondary": "#ffffff","outline-variant": "#becab6","on-secondary-fixed-variant": "#474647",
+          "error": "#ba1a1a","surface": "#f9f9ff","on-primary-fixed": "#002200","primary": "#008000",
+          "on-secondary-container": "#636263","on-error-container": "#93000a","tertiary-fixed-dim": "#c0c9c0",
+          "on-tertiary": "#ffffff","tertiary": "#4f5851","tertiary-fixed": "#dce5dc",
+          "primary-container": "#008000","on-primary": "#ffffff","on-tertiary-container": "#ebf4eb",
+          "secondary-fixed-dim": "#c8c6c7"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.5rem","lg": "0.75rem","xl": "1rem","full": "9999px"
+        },
+        "spacing": {
+          "gutter": "24px","md": "16px","margin-mobile": "16px","xl": "40px",
+          "sm": "8px","margin-desktop": "64px","lg": "24px","base": "4px","xs": "4px"
+        },
+        "fontFamily": {
+          "headline-xl":["Poppins"],"headline-lg-mobile":["Poppins"],"headline-xl-mobile":["Poppins"],
+          "body-md":["Poppins"],"label-sm":["Poppins"],"label-md":["Poppins"],
+          "headline-lg":["Poppins"],"body-lg":["Poppins"],"headline-md":["Poppins"],"title-lg":["Poppins"]
+        },
+        "fontSize": {
+          "headline-xl":["40px",{"lineHeight":"48px","letterSpacing":"-0.02em","fontWeight":"700"}],
+          "headline-lg-mobile":["24px",{"lineHeight":"32px","fontWeight":"600"}],
+          "headline-xl-mobile":["30px",{"lineHeight":"36px","letterSpacing":"-0.02em","fontWeight":"700"}],
+          "body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}],
+          "label-sm":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"500"}],
+          "label-md":["14px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"500"}],
+          "headline-lg":["32px",{"lineHeight":"40px","fontWeight":"600"}],
+          "body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],
+          "headline-md":["24px",{"lineHeight":"32px","fontWeight":"600"}],
+          "display-lg":["48px",{"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"700"}],
+          "title-lg":["20px",{"lineHeight":"28px","fontWeight":"500"}]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  * { font-family: 'Poppins', sans-serif; }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
+    display: inline-block; vertical-align: middle;
+  }
+  /* Masonry grid */
+  .masonry-grid { columns: 1; column-gap: 1.25rem; }
+  @media(min-width:640px){ .masonry-grid { columns: 2; } }
+  @media(min-width:1024px){ .masonry-grid { columns: 3; } }
+  .masonry-item { break-inside: avoid; margin-bottom: 1.25rem; display: block; }
+  /* List view */
+  .list-view .masonry-grid { columns: 1 !important; }
+  .list-view .masonry-item .media-thumb { height: 180px !important; }
+  .list-view .masonry-item { display: flex; gap: 1rem; align-items: stretch; }
+  .list-view .masonry-item .media-thumb { width: 260px; min-width: 260px; height: 160px; flex-shrink: 0; }
+  .list-view .masonry-item .item-info { display: flex; flex-direction: column; justify-content: center; padding: 1.25rem 1rem; }
+  /* Scroll reveal */
+  .scroll-reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.16,1,0.3,1); }
+  .animate-in { opacity: 1; transform: translateY(0); }
+  /* Category active */
+  .cat-btn.active { background: #008000; color: #fff; border-color: #008000; }
+  /* Lightbox */
+  #lightbox { display: none; position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.92); backdrop-filter: blur(8px);
+    align-items: center; justify-content: center; padding: 1rem; }
+  #lightbox.open { display: flex; }
+  #lightbox-inner { position: relative; max-width: 900px; width: 100%;
+    max-height: 90vh; display: flex; flex-direction: column; border-radius: 1rem;
+    overflow: hidden; background: #1a1a1a; box-shadow: 0 40px 80px rgba(0,0,0,0.8); }
+  #lightbox-media-wrap { position: relative; background: #000; max-height: 65vh;
+    display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  #lightbox-img { max-width: 100%; max-height: 65vh; object-fit: contain; display: block; }
+  #lightbox-video { width: 100%; max-height: 65vh; display: none; }
+  #lightbox-info { padding: 1.25rem 1.5rem; background: #1a1a1a; color: #fff; }
+  #lightbox-close { position: absolute; top: 1rem; right: 1rem; z-index: 10001;
+    width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.15);
+    border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s; }
+  #lightbox-close:hover { background: rgba(255,255,255,0.3); }
+  #lightbox-prev, #lightbox-next { position: absolute; top: 50%; transform: translateY(-50%);
+    width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.15);
+    border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: white; z-index: 10001; transition: all 0.2s; }
+  #lightbox-prev { left: 0.75rem; }
+  #lightbox-next { right: 0.75rem; }
+  #lightbox-prev:hover, #lightbox-next:hover { background: #008000; transform: translateY(-50%) scale(1.1); }
+  /* Video play overlay */
+  .play-overlay { position: absolute; inset: 0; display: flex; align-items: center;
+    justify-content: center; background: rgba(0,0,0,0.35); transition: background 0.3s; }
+  .play-overlay:hover { background: rgba(0,0,0,0.5); }
+  .play-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.9);
+    display: flex; align-items: center; justify-content: center; transition: transform 0.3s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+  .play-overlay:hover .play-icon { transform: scale(1.15); }
+  /* Mobile menu */
+  #mobile-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #fcf9f8; z-index: 999; transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); overflow-y: auto; padding-top: 80px; }
+  #mobile-menu.open { transform: translateX(0); }
+  /* Grid item hover */
+  .gallery-item { cursor: pointer; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s; }
+  .gallery-item:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,128,0,0.15); }
+  /* WhatsApp FAB */
+  .wa-fab { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 40;
+    display: flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.25rem;
+    background: #25D366; color: #fff; border-radius: 9999px; font-weight: 700;
+    font-size: 14px; box-shadow: 0 8px 30px rgba(37,211,102,0.45); border: none;
+    cursor: pointer; text-decoration: none; transition: all 0.3s; }
+  .wa-fab:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 12px 40px rgba(37,211,102,0.6); }
+  .wa-fab svg { width: 22px; height: 22px; fill: white; flex-shrink: 0; }
+  /* Hidden item */
+  .hidden-item { display: none !important; }
+</style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed overflow-x-hidden">
+
+<!-- ===== NAV ===== -->
+<header class="bg-surface docked full-width top-0 sticky border-b border-outline-variant shadow-sm z-50 transition-all duration-300">
+<nav class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-base w-full max-w-7xl mx-auto">
+  <div class="flex items-center gap-base">
+    <img alt="Zimbabwe Government Logo" class="h-8 md:h-16 w-auto transition-transform hover:scale-105" src="assets/logo.png"/>
+  </div>
+  <div class="hidden md:flex items-center gap-md">
+    <a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="index.php">Home<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span></a>
+    <a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="about.php">About<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span></a>
+    <a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="departments.php">Departments<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span></a>
+    <div class="relative group">
+      <a class="text-primary font-bold border-b-2 border-primary pb-1 transition-colors inline-flex items-center gap-1" href="resources.php" style="color:#008000"><?= __('nav_resources') ?> <span aria-hidden="true">&#9662;</span></a>
+      <div class="absolute left-0 top-full hidden min-w-36 pt-2 group-hover:block group-focus-within:block">
+        <a class="block bg-surface px-md py-sm text-primary font-bold shadow-lg hover:bg-surface-container-high" href="gallery.php" style="color:#008000"><?= __('nav_gallery') ?></a>
+      </div>
+    </div>
+    <a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="news.php">News<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span></a>
+    <a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="contact.php">Contact Us<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span></a>
+  </div>
+  <div class="hidden md:flex items-center gap-base">
+    <a href="http://127.0.0.1:8000" target="_blank" rel="noopener noreferrer" class="bg-primary text-on-primary font-label-md px-md py-xs rounded-lg hover:shadow-lg transition-all active:scale-95 whitespace-nowrap inline-flex items-center justify-center" style="background-color:#008000"><?= __('nav_apply') ?></a>
+  </div>
+  <?php echo lang_switcher_html('hidden md:flex'); ?>
+<button id="menu-toggle" class="md:hidden flex flex-col gap-1 p-2 hover:bg-surface-container rounded-lg transition-colors z-[1000] relative" aria-label="Toggle menu">
+    <span class="w-6 h-0.5 bg-on-surface transition-all"></span>
+    <span class="w-6 h-0.5 bg-on-surface transition-all"></span>
+    <span class="w-6 h-0.5 bg-on-surface transition-all"></span>
+  </button>
+</nav>
+</header>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" aria-hidden="true">
+  <div class="px-margin-mobile py-base space-y-base max-w-7xl mx-auto">
+    <a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="index.php"><?= __('nav_home') ?></a>
+    <a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="about.php"><?= __('nav_about') ?></a>
+    <a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="departments.php"><?= __('nav_departments') ?></a>
+    <details class="group">
+      <summary class="cursor-pointer list-none block text-primary font-bold py-sm px-sm rounded-lg transition-all" style="color:#008000"><?= __('nav_resources') ?> <span aria-hidden="true">&#9662;</span></summary>
+      <a class="ml-md block text-primary font-bold py-sm px-sm rounded-lg transition-all" href="gallery.php" style="color:#008000"><?= __('nav_gallery') ?></a>
+      <a class="ml-md block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="resources.php"><?= __('nav_resources') ?></a>
+    </details>
+    <a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="news.php"><?= __('nav_news') ?></a>
+    <a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="contact.php"><?= __('nav_contact') ?></a>
+    <a href="http://127.0.0.1:8000" target="_blank" rel="noopener noreferrer" class="w-full bg-primary text-on-primary font-label-md px-md py-sm rounded-lg hover:shadow-lg transition-all active:scale-95 inline-flex items-center justify-center text-center" style="background-color:#008000"><?= __('nav_apply') ?></a>
+  </div>
+</div>
+
+<main>
+<!-- ===== HERO ===== -->
+<section class="relative h-64 md:h-80 w-full overflow-hidden flex items-center justify-center">
+<div class="absolute inset-0 z-0">
+<img alt="Gallery background" class="w-full h-full object-cover brightness-50 scale-105 animate-[pulse_10s_ease-in-out_infinite]" src="assets/gallery/01JQEJ86VZQMZMMB31Q04EZGF0.jpg"/>
+</div>
+<div class="relative z-10 h-full flex flex-col justify-center items-center text-center px-margin-mobile reveal active">
+<h1 class="font-display-lg text-display-lg text-white text-shadow-sm mb-base">Gallery</h1>
+<nav class="flex items-center gap-xs text-white/90 font-label-md text-label-md">
+<a class="hover:underline transition-all" href="index.php"><?= __('nav_home') ?></a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="font-bold">Gallery</span>
+</nav>
+</div>
+</section>
+
+<!-- ===== CATEGORY FILTER STRIP ===== -->
+<section class="max-w-7xl mx-auto px-margin-mobile lg:px-margin-desktop pt-xl pb-md">
+  <div class="text-center mb-lg scroll-reveal">
+    <h2 class="font-headline-lg text-headline-lg text-[#008000] mb-xs">Browse by Category</h2>
+    <p class="text-on-surface-variant flex items-center justify-center gap-xs text-sm">
+      <span class="material-symbols-outlined text-[18px]">touch_app</span>
+      Click a category to filter the gallery
+    </p>
+  </div>
+  <!-- Category thumbnail cards -->
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-md mb-xl scroll-reveal">
+    <button data-cat="all" class="cat-btn active group relative aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+      <div class="absolute inset-0 bg-cover bg-center scale-105 group-hover:scale-110 transition-transform duration-700" style="background-image:url('assets/gallery/01JQEJ86VZQMZMMB31Q04EZGF0.jpg')"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20 z-10"></div>
+      <span class="absolute bottom-0 left-0 right-0 p-3 z-20 text-white font-semibold text-sm text-center">All</span>
+    </button>
+    <button data-cat="exhibitions" class="cat-btn group relative aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+      <div class="absolute inset-0 bg-cover bg-center scale-105 group-hover:scale-110 transition-transform duration-700" style="background-image:url('assets/gallery/01JXF9C4GHE7WXCN8NERDSPB5E.jpg')"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#008000]/80 to-black/20 z-10"></div>
+      <span class="absolute bottom-0 left-0 right-0 p-3 z-20 text-white font-semibold text-sm text-center">Exhibitions</span>
+    </button>
+    <button data-cat="youth-day" class="cat-btn group relative aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+      <div class="absolute inset-0 bg-cover bg-center scale-105 group-hover:scale-110 transition-transform duration-700" style="background-image:url('assets/gallery/01JQ3HYE3P7GF1Y5ARTZ16M7KN.jpg')"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#008000]/80 to-black/20 z-10"></div>
+      <span class="absolute bottom-0 left-0 right-0 p-3 z-20 text-white font-semibold text-sm text-center">National Youth Day</span>
+    </button>
+    <button data-cat="vtc" class="cat-btn group relative aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+      <div class="absolute inset-0 bg-cover bg-center scale-105 group-hover:scale-110 transition-transform duration-700" style="background-image:url('assets/gallery/01JV7D9W77JK90T9D9S63AACNE.jpg')"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#008000]/80 to-black/20 z-10"></div>
+      <span class="absolute bottom-0 left-0 right-0 p-3 z-20 text-white font-semibold text-sm text-center">VTC</span>
+    </button>
+    <button data-cat="ysz" class="cat-btn group relative aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+      <div class="absolute inset-0 bg-cover bg-center scale-105 group-hover:scale-110 transition-transform duration-700" style="background-image:url('assets/gallery/01JK8G6SXJMJC7GYZAWVBFJGC8.jpeg')"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#008000]/80 to-black/20 z-10"></div>
+      <span class="absolute bottom-0 left-0 right-0 p-3 z-20 text-white font-semibold text-sm text-center">YSZ</span>
+    </button>
+    <button data-cat="videos" class="cat-btn group relative aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+      <div class="absolute inset-0 bg-[#008000]/90 flex items-center justify-content-center z-10"></div>
+      <div class="absolute inset-0 bg-cover bg-center scale-105" style="background-image:url('assets/gallery/01K0C0AHPSXB20CVSVPRQQW3HR.jpeg')"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#005500]/90 to-black/30 z-10"></div>
+      <div class="absolute inset-0 flex items-center justify-center z-20">
+        <span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings:'FILL' 1">play_circle</span>
+      </div>
+      <span class="absolute bottom-0 left-0 right-0 p-3 z-20 text-white font-semibold text-sm text-center">Videos</span>
+    </button>
+  </div>
+</section>
+
+<!-- ===== MASONRY / LIST SECTION ===== -->
+<section class="bg-surface-container py-xl" id="gallery-section">
+  <div class="max-w-7xl mx-auto px-margin-mobile lg:px-margin-desktop">
+    <!-- Header row: title + view toggles -->
+    <div class="flex flex-wrap items-center justify-between mb-lg gap-sm scroll-reveal">
+      <div>
+        <h2 class="font-headline-lg text-headline-lg text-on-surface" id="gallery-section-title">All Photos &amp; Videos</h2>
+        <p class="text-sm text-on-surface-variant mt-1" id="gallery-count"></p>
+      </div>
+      <div class="flex gap-sm items-center">
+        <!-- Grid view button -->
+        <button id="btn-grid-view" title="Grid View"
+          class="w-10 h-10 rounded-full border-2 border-[#008000] bg-[#008000] text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95">
+          <span class="material-symbols-outlined text-[20px]">grid_view</span>
+        </button>
+        <!-- List view button -->
+        <button id="btn-list-view" title="List View"
+          class="w-10 h-10 rounded-full border-2 border-outline bg-white text-on-surface-variant flex items-center justify-center transition-all hover:scale-110 active:scale-95 hover:border-[#008000] hover:text-[#008000]">
+          <span class="material-symbols-outlined text-[20px]">view_list</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Gallery grid/list container -->
+    <div id="gallery-container" class="masonry-grid">
+<?php if (!$galleryItems): ?>
+      <p class="col-span-full text-center text-on-surface-variant py-12"><?= __("no_gallery") ?></p>
+    <?php endif; ?>
+    <?php foreach ($galleryItems as $i => $g):
+        $meta = $catMeta[$g['category']] ?? $catMeta['exhibitions'];
+        $height = $thumbHeights[$i % count($thumbHeights)];
+        $isHidden = $i >= 7;
+    ?>
+      <div class="masonry-item gallery-item scroll-reveal group relative overflow-hidden rounded-xl bg-white shadow-sm<?= $isHidden ? ' hidden-item' : '' ?>"
+        data-type="<?= e($g['media_type']) ?>" data-cat="<?= e($g['category']) ?>"<?= $isHidden ? ' data-loadmore="true"' : '' ?>
+        <?php if ($g['media_type'] === 'video' && $g['video_url']): ?>data-video-src="<?= e($g['video_url']) ?>"<?php endif; ?>
+        data-src="<?= e($g['file_path']) ?>"
+        data-title="<?= e(localized_content_value($_gtrans[$g['id']]['title'] ?? $g['title'])) ?>"
+        data-desc="<?= e(localized_content_value($_gtrans[$g['id']]['title'] ?? $g['title'])) ?>"
+        data-date="<?= e(date('F j, Y', strtotime($g['created_at']))) ?>"
+        data-by="<?= e($g['author_name']) ?>">
+        <div class="media-thumb relative overflow-hidden" style="height:<?= (int)$height ?>px">
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="<?= e($g['file_path']) ?>" alt="<?= e($_gtrans[$g['id']]['title'] ?? $g['title']) ?>" loading="lazy"/>
+          <?php if ($g['media_type'] === 'video'): ?>
+          <div class="play-overlay">
+            <div class="play-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#008000" width="28" height="28"><path d="M8 5v14l11-7z"/></svg></div>
+          </div>
+          <?php endif; ?>
+          <div class="absolute top-3 left-3">
+            <span class="<?= $meta['badge'] ?> text-white text-xs font-bold px-2 py-1 rounded-full"><?= $g['media_type'] === 'video' ? 'VIDEO' : strtoupper($meta['label']) ?></span>
+          </div>
+        </div>
+        <div class="item-info p-md">
+          <p class="<?= $meta['text'] ?> text-xs font-semibold uppercase tracking-wide mb-1"><?= e($meta['label']) ?></p>
+          <h4 class="font-semibold text-on-surface group-hover:text-[#008000] transition-colors text-base"><?= e(localized_content_value($_gtrans[$g['id']]['title'] ?? $g['title'])) ?></h4>
+          <p class="text-on-surface-variant text-xs mt-1 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span> <?= e(date('F j, Y', strtotime($g['created_at']))) ?></p>
+        </div>
+      </div>
+    <?php endforeach; ?>
+
+    </div><!-- end #gallery-container -->
+
+    <!-- No results message -->
+    <div id="no-results" class="hidden text-center py-xl">
+      <span class="material-symbols-outlined text-5xl text-outline mb-md block">image_search</span>
+      <p class="text-on-surface-variant text-lg">No items in this category yet.</p>
+    </div>
+
+    <!-- Load More Button -->
+    <div class="flex justify-center mt-xl scroll-reveal" id="load-more-wrap">
+      <button id="btn-load-more" class="group flex items-center gap-base px-xl py-md border-2 border-[#008000] text-[#008000] font-bold rounded-lg hover:bg-[#008000] hover:text-white transition-all active:scale-95">
+        Load More Photos &amp; Videos
+        <span class="material-symbols-outlined transition-transform group-hover:translate-y-1">expand_more</span>
+      </button>
+    </div>
+
+  </div>
+</section>
+</main>
+
+<!-- ===== LIGHTBOX ===== -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <div id="lightbox-inner">
+    <button id="lightbox-close" aria-label="Close">
+      <span class="material-symbols-outlined text-white text-2xl">close</span>
+    </button>
+    <div id="lightbox-media-wrap">
+      <button id="lightbox-prev" aria-label="Previous">
+        <span class="material-symbols-outlined text-white text-2xl">chevron_left</span>
+      </button>
+      <img id="lightbox-img" src="" alt="" />
+      <video id="lightbox-video" controls playsinline></video>
+      <button id="lightbox-next" aria-label="Next">
+        <span class="material-symbols-outlined text-white text-2xl">chevron_right</span>
+      </button>
+    </div>
+    <div id="lightbox-info">
+      <div class="flex items-start justify-between gap-md">
+        <div>
+          <span id="lightbox-cat-badge" class="text-xs font-bold px-2 py-0.5 rounded-full bg-[#008000] text-white mb-2 inline-block"></span>
+          <h3 id="lightbox-title" class="text-white font-bold text-lg leading-snug mt-1"></h3>
+          <p id="lightbox-desc" class="text-white/70 text-sm mt-2 leading-relaxed"></p>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-md mt-3 pt-3 border-t border-white/10">
+        <span class="flex items-center gap-1 text-white/60 text-xs">
+          <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+          <span id="lightbox-date"></span>
+        </span>
+        <span class="flex items-center gap-1 text-white/60 text-xs">
+          <span class="material-symbols-outlined text-[14px]">photo_camera</span>
+          <span id="lightbox-by"></span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="bg-[#008000] text-on-primary">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg px-margin-mobile lg:px-margin-desktop py-xl w-full max-w-7xl mx-auto align-middle">
+<!-- Brand & Contact -->
+<div class="flex flex-col gap-md">
+<div class="flex items-center gap-sm">
+<img alt="Zimbabwe Coat of Arms" class="h-14 md:h-20 w-auto object-contain invert brightness-0" src="assets/logo.png"/>
+</div>
+<div class="space-y-sm">
+<p class="font-body-md opacity-90">11th Floor Central House, Central Avenue, Harare, Zimbabwe</p>
+<div class="flex items-center gap-base opacity-90">
+<span class="material-symbols-outlined text-sm">mail</span><span>info@youth.gov.zw</span>
+</div>
+<div class="flex items-center gap-base opacity-90">
+<span class="material-symbols-outlined text-sm">call</span><span>+263 242 707741</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-md mt-base">
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="Facebook"><svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg></a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="WhatsApp"><svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.42 9.864-9.864.002-2.637-1.03-5.114-2.905-6.99C16.559 1.875 14.09 1.83 11.45 1.83c-5.437 0-9.862 4.421-9.866 9.865-.001 1.761.47 3.483 1.365 5.011L1.92 21.05l4.727-1.24.001-.004-.001-.002zm12.317-5.908c-.3-.15-1.772-.875-2.046-.975-.275-.1-.475-.15-.675.15-.2.3-.775 1.025-.95 1.225-.175.2-.35.225-.65.075-.3-.15-1.265-.467-2.41-1.485-.89-.794-1.49-1.775-1.665-2.075-.175-.3-.02-.463.13-.612.135-.135.3-.35.45-.525.15-.175.2-.3.3-.5s.05-.375-.025-.525c-.075-.15-.675-1.625-.925-2.225-.244-.589-.48-.58-.675-.59-.175-.01-.375-.01-.575-.01-.2 0-.525.075-.8.375-.275.3-1.05 1.025-1.05 2.5s1.025 2.9 1.175 3.1c.15.2 2.013 3.074 4.875 4.31.68.295 1.21.47 1.62.6.685.217 1.31.187 1.805.113.55-.082 1.772-.725 2.022-1.4.25-.675.25-1.25.175-1.375-.075-.125-.275-.2-.575-.35z"/></svg></a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="X (Twitter)"><svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="Instagram"><svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="LinkedIn"><svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+</div>
+</div>
+<!-- Quick Links -->
+<div class="flex flex-col gap-md">
+<span class="font-title-lg text-title-lg border-b border-white/20 pb-base"><?= __('footer_quick_links') ?></span>
+<div class="flex flex-col gap-sm">
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="index.php"><?= __('nav_home') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="about.php"><?= __('nav_about') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="departments.php"><?= __('nav_departments') ?></a>
+<a class="text-on-primary font-bold underline" href="gallery.php"><?= __('nav_gallery') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="resources.php"><?= __('nav_resources') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="news.php"><?= __('nav_news') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="contact.php"><?= __('nav_contact') ?></a>
+</div>
+</div>
+<!-- Resources -->
+<div class="flex flex-col gap-md">
+<span class="font-title-lg text-title-lg border-b border-white/20 pb-base"><?= __('footer_resources') ?></span>
+<div class="flex flex-col gap-sm">
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#"><?= __('footer_nat_policy') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#"><?= __('footer_strat_plan') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#"><?= __('footer_vtc_forms') ?></a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#"><?= __('footer_annual_rep') ?></a>
+</div>
+</div>
+<!-- Newsletter -->
+<div class="flex flex-col gap-md">
+<span class="font-title-lg text-title-lg border-b border-white/20 pb-base"><?= __('footer_newsletter') ?></span>
+<p class="text-sm opacity-90"><?= __('footer_newsletter_sub') ?></p>
+<div class="flex flex-col gap-base">
+<input class="bg-white/10 border border-white/20 rounded-lg px-md py-sm text-white placeholder:text-white/40 focus:ring-primary-fixed focus:border-primary-fixed transition-all" placeholder="<?= __('footer_email_ph') ?>" type="email"/>
+<button class="bg-[#ccffba] text-[#002200] font-bold py-sm rounded-lg hover:brightness-110 active:scale-95 transition-all"><?= __('footer_subscribe') ?></button>
+</div>
+</div>
+</div>
+<!-- Copyright -->
+<div class="border-t border-white/10 py-md text-center text-on-primary/60 font-label-sm">
+  Copyright &copy; 2025 Ministry of Youth Empowerment. All rights reserved.
+</div>
+</footer>
+
+<!-- ===== WHATSAPP "BOOK A CALL" FAB ===== -->
+<a id="whatsapp-fab" class="wa-fab" href="https://wa.me/263242707741?text=Hello%2C%20I%20would%20like%20to%20book%20a%20call%20with%20the%20Ministry%20of%20Youth%20Empowerment." target="_blank" rel="noopener noreferrer" aria-label="Book a call via WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.42 9.864-9.864.002-2.637-1.03-5.114-2.905-6.99C16.559 1.875 14.09 1.83 11.45 1.83c-5.437 0-9.862 4.421-9.866 9.865-.001 1.761.47 3.483 1.365 5.011L1.92 21.05l4.727-1.24zm12.317-5.908c-.3-.15-1.772-.875-2.046-.975-.275-.1-.475-.15-.675.15-.2.3-.775 1.025-.95 1.225-.175.2-.35.225-.65.075-.3-.15-1.265-.467-2.41-1.485-.89-.794-1.49-1.775-1.665-2.075-.175-.3-.02-.463.13-.612.135-.135.3-.35.45-.525.15-.175.2-.3.3-.5s.05-.375-.025-.525c-.075-.15-.675-1.625-.925-2.225-.244-.589-.48-.58-.675-.59-.175-.01-.375-.01-.575-.01-.2 0-.525.075-.8.375-.275.3-1.05 1.025-1.05 2.5s1.025 2.9 1.175 3.1c.15.2 2.013 3.074 4.875 4.31.68.295 1.21.47 1.62.6.685.217 1.31.187 1.805.113.55-.082 1.772-.725 2.022-1.4.25-.675.25-1.25.175-1.375-.075-.125-.275-.2-.575-.35z"/></svg>
+  <span>Book a Call</span>
+</a>
+
+<script>
+// ===================== MOBILE MENU =====================
+const menuToggle = document.getElementById('menu-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+let menuOpen = false;
+menuToggle.addEventListener('click', function() {
+  menuOpen = !menuOpen;
+  mobileMenu.classList.toggle('open', menuOpen);
+  mobileMenu.setAttribute('aria-hidden', !menuOpen);
+  document.body.style.overflow = menuOpen ? 'hidden' : '';
+  const spans = this.querySelectorAll('span');
+  spans[0].style.transform = menuOpen ? 'rotate(45deg) translateY(8px)' : '';
+  spans[1].style.opacity = menuOpen ? '0' : '1';
+  spans[2].style.transform = menuOpen ? 'rotate(-45deg) translateY(-8px)' : '';
+});
+mobileMenu.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    menuOpen = false;
+    mobileMenu.classList.remove('open');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    const spans = menuToggle.querySelectorAll('span');
+    spans[0].style.transform = '';
+    spans[1].style.opacity = '1';
+    spans[2].style.transform = '';
+  });
+});
+
+// ===================== SCROLL REVEAL =====================
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('animate-in'); revealObserver.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.scroll-reveal').forEach(el => revealObserver.observe(el));
+
+// ===================== GALLERY DATA / STATE =====================
+const galleryContainer = document.getElementById('gallery-container');
+const allItems = Array.from(document.querySelectorAll('.gallery-item'));
+let currentCat = 'all';
+let isListView = false;
+let loadMoreDone = false;
+
+// ===================== CATEGORY FILTER =====================
+const catBtns = document.querySelectorAll('.cat-btn');
+const noResults = document.getElementById('no-results');
+const sectionTitle = document.getElementById('gallery-section-title');
+const galleryCount = document.getElementById('gallery-count');
+const loadMoreWrap = document.getElementById('load-more-wrap');
+
+const catLabels = { all:'All Photos & Videos', exhibitions:'Exhibitions', 'youth-day':'National Youth Day', vtc:'VTC', ysz:'YSZ', videos:'Videos' };
+
+function updateGallery() {
+  let visible = 0;
+  allItems.forEach(item => {
+    const cat = item.dataset.cat;
+    const isLoadMore = item.dataset.loadmore === 'true';
+    const matchesCat = currentCat === 'all' || cat === currentCat;
+    const shouldShow = matchesCat && (!isLoadMore || loadMoreDone);
+    if (shouldShow) { item.classList.remove('hidden-item'); visible++; }
+    else { item.classList.add('hidden-item'); }
+  });
+  noResults.classList.toggle('hidden', visible > 0);
+  sectionTitle.textContent = catLabels[currentCat] || 'Gallery';
+  // Count hidden loadmore items for current cat
+  const hiddenCount = allItems.filter(i => {
+    const matchesCat = currentCat === 'all' || i.dataset.cat === currentCat;
+    return matchesCat && i.dataset.loadmore === 'true' && !loadMoreDone;
+  }).length;
+  loadMoreWrap.style.display = hiddenCount > 0 ? 'flex' : 'none';
+  galleryCount.textContent = visible + ' item' + (visible !== 1 ? 's' : '') + ' displayed';
+  // Re-run observer for newly shown items
+  document.querySelectorAll('.gallery-item:not(.hidden-item) .scroll-reveal, .gallery-item:not(.hidden-item)').forEach(el => {
+    el.classList.add('animate-in');
+  });
+}
+
+catBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    catBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    updateGallery();
+  });
+});
+
+// ===================== LOAD MORE =====================
+document.getElementById('btn-load-more').addEventListener('click', () => {
+  loadMoreDone = true;
+  updateGallery();
+  document.getElementById('btn-load-more').disabled = true;
+  loadMoreWrap.style.display = 'none';
+});
+
+// ===================== VIEW TOGGLE =====================
+const btnGrid = document.getElementById('btn-grid-view');
+const btnList = document.getElementById('btn-list-view');
+
+btnGrid.addEventListener('click', () => {
+  isListView = false;
+  galleryContainer.classList.remove('list-view');
+  btnGrid.classList.add('bg-[#008000]','text-white','border-[#008000]');
+  btnGrid.classList.remove('bg-white','text-on-surface-variant','border-outline');
+  btnList.classList.remove('bg-[#008000]','text-white','border-[#008000]');
+  btnList.classList.add('bg-white','text-on-surface-variant','border-outline');
+  // Restore masonry heights
+  allItems.forEach(item => {
+    const thumb = item.querySelector('.media-thumb');
+    if (thumb) thumb.style.removeProperty('height');
+  });
+});
+
+btnList.addEventListener('click', () => {
+  isListView = true;
+  galleryContainer.classList.add('list-view');
+  btnList.classList.add('bg-[#008000]','text-white','border-[#008000]');
+  btnList.classList.remove('bg-white','text-on-surface-variant','border-outline');
+  btnGrid.classList.remove('bg-[#008000]','text-white','border-[#008000]');
+  btnGrid.classList.add('bg-white','text-on-surface-variant','border-outline');
+  // Force list thumb height
+  allItems.forEach(item => {
+    const thumb = item.querySelector('.media-thumb');
+    if (thumb) thumb.style.height = '160px';
+  });
+});
+
+// ===================== LIGHTBOX =====================
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lightbox-img');
+const lbVideo = document.getElementById('lightbox-video');
+const lbTitle = document.getElementById('lightbox-title');
+const lbDesc = document.getElementById('lightbox-desc');
+const lbDate = document.getElementById('lightbox-date');
+const lbBy = document.getElementById('lightbox-by');
+const lbCatBadge = document.getElementById('lightbox-cat-badge');
+let currentIndex = 0;
+
+function getVisibleItems() {
+  return allItems.filter(i => !i.classList.contains('hidden-item'));
+}
+
+function openLightbox(index) {
+  const visibleItems = getVisibleItems();
+  if (index < 0 || index >= visibleItems.length) return;
+  currentIndex = index;
+  const item = visibleItems[index];
+  const type = item.dataset.type;
+  lbTitle.textContent = item.dataset.title || '';
+  lbDesc.textContent = item.dataset.desc || '';
+  lbDate.textContent = item.dataset.date || '';
+  lbBy.textContent = item.dataset.by || '';
+  lbCatBadge.textContent = (item.dataset.cat || '').replace('-',' ').replace(/\b\w/g,c=>c.toUpperCase());
+  if (type === 'video') {
+    lbImg.style.display = 'none';
+    lbVideo.style.display = 'block';
+    lbVideo.src = item.dataset.videoSrc || '';
+    lbVideo.load();
+    lbVideo.play().catch(()=>{});
+  } else {
+    lbVideo.pause();
+    lbVideo.src = '';
+    lbVideo.style.display = 'none';
+    lbImg.style.display = 'block';
+    lbImg.src = item.dataset.src || '';
+    lbImg.alt = item.dataset.title || '';
+  }
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+  lbVideo.pause();
+  lbVideo.src = '';
+}
+
+allItems.forEach((item, idx) => {
+  item.addEventListener('click', () => {
+    const visibleItems = getVisibleItems();
+    const visIdx = visibleItems.indexOf(item);
+    if (visIdx > -1) openLightbox(visIdx);
+  });
+});
+
+document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+document.getElementById('lightbox-prev').addEventListener('click', (e) => { e.stopPropagation(); openLightbox(currentIndex - 1); });
+document.getElementById('lightbox-next').addEventListener('click', (e) => { e.stopPropagation(); openLightbox(currentIndex + 1); });
+
+lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+
+document.addEventListener('keydown', (e) => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') openLightbox(currentIndex - 1);
+  if (e.key === 'ArrowRight') openLightbox(currentIndex + 1);
+});
+
+// ===================== INIT =====================
+updateGallery();
+</script>
+<script src="assets/js/minyouth-widget.js?v=20260820b" defer></script>
+<script src="assets/js/site-nav.js"></script>
+</body></html>

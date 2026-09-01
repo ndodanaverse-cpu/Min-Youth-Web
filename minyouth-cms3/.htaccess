@@ -1,0 +1,6 @@
+DirectoryIndex index.html
+Options -Indexes
+
+<IfModule mod_mime.c>
+    AddType text/html .html
+</IfModule>

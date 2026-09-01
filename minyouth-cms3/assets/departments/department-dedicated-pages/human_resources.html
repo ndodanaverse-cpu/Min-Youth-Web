@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<!-- Standard Favicon for Browser Tabs (ICO file) -->
+<link rel="icon" type="image/x-icon" href="assets/icon.png">
+
+<!-- Modern, High-Quality Icon for Modern Browsers (PNG file) -->
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icon.png">
+
+<!-- Apple Touch Icon for iOS Devices (iPhones/iPads) -->
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icon.png">
+
+<!-- Android/Chrome Web App Manifest -->
+<link rel="manifest" href="assets/site.webmanifest">
+<title>Human Resources | Ministry of Youth Empowerment</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Poppins -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+                                "colors": {
+                        "inverse-on-surface": "#f3f0ef",
+                        "background": "#fcf9f8",
+                        "on-surface-variant": "#3e4a41",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f6f3f2",
+                        "tertiary-fixed": "#ffdad6",
+                        "surface-container-high": "#eae7e7",
+                        "on-primary-fixed-variant": "#00522f",
+                        "primary-fixed": "#8df8b7",
+                        "on-secondary-container": "#6e5c00",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#002110",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface-bright": "#fcf9f8",
+                        "on-surface": "#1c1b1b",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#93000d",
+                        "on-background": "#1c1b1b",
+                        "surface-container": "#f0eded",
+                        "surface": "#fcf9f8",
+                        "on-secondary-fixed-variant": "#544600",
+                        "secondary-fixed-dim": "#e9c400",
+                        "primary-container": "#008000",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#bdcabe",
+                        "secondary-fixed": "#ffe16d",
+                        "outline": "#6e7a70",
+                        "surface-variant": "#e5e2e1",
+                        "surface-tint": "#008000",
+                        "on-tertiary-fixed": "#410002",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#fcd400",
+                        "tertiary-fixed-dim": "#ffb4ac",
+                        "primary-fixed-dim": "#70db9d",
+                        "on-primary-container": "#fdfff9",
+                        "inverse-surface": "#313030",
+                        "tertiary": "#bd0014",
+                        "primary": "#008000",
+                        "on-secondary-fixed": "#221b00",
+                        "tertiary-container": "#e61e25",
+                        "on-tertiary-container": "#fffdff",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#70db9d"
+                    },
+                                "spacing": {
+                        "sm": "12px",
+                        "md": "24px",
+                        "margin-mobile": "16px",
+                        "xs": "4px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "lg": "48px",
+                        "xl": "80px",
+                        "margin-desktop": "64px"
+                    },
+            "fontFamily": {
+                "label-md": ["Poppins"],
+                "headline-lg-mobile": ["Poppins"],
+                "body-lg": ["Poppins"],
+                "label-sm": ["Poppins"],
+                "body-md": ["Poppins"],
+                "headline-md": ["Poppins"],
+                "headline-xl": ["Poppins"],
+                "headline-lg": ["Poppins"],
+                "headline-xl-mobile": ["Poppins"]
+            },
+            "fontSize": {
+                "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                "headline-xl-mobile": ["30px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .bento-card {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .bento-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px -10px rgba(0, 100, 0, 0.15);
+        }
+        .breadcrumb-separator::after {
+            content: 'chevron_right';
+            font-family: 'Material Symbols Outlined';
+            font-size: 14px;
+            margin: 0 8px;
+            color: #6f7a69;
+        }
+        /* Full-screen mobile menu overlay */
+        #mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fcf9f8;
+            z-index: 999;
+            transform: translateX(-100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            padding-top: 80px;
+        }
+        #mobile-menu.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<header class="bg-surface docked full-width top-0 sticky border-b border-outline-variant shadow-sm z-50 transition-all duration-300">
+<nav class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-base w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-base">
+<img alt="Zimbabwe Government Logo" class="h-8 md:h-16 w-auto transition-transform hover:scale-105" src="../../../assets/logo.png"/>
+</div>
+<div class="hidden md:flex items-center gap-md">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="../../../index.php">
+                Home
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="../../../about.php">
+                About
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 transition-colors" href="../../../departments.php" style="color: #008000;">Departments</a>
+<div class="relative group">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative py-1 inline-flex items-center gap-1" href="../../../resources.php">
+                Resources <span aria-hidden="true">&#9662;</span>
+</a>
+<div class="absolute left-0 top-full hidden min-w-36 pt-2 group-hover:block group-focus-within:block">
+<a class="block bg-surface px-md py-sm text-on-surface-variant font-medium shadow-lg hover:bg-surface-container-high hover:text-primary" href="../../../gallery.php">Gallery</a>
+</div>
+</div>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="../../../news.php">
+                News
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="../../../contact.php">
+                Contact Us
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+</a>
+</div>
+<div class="hidden md:flex items-center gap-base">
+<button class="bg-primary text-on-primary font-label-md px-md py-xs rounded-lg hover:shadow-lg transition-all active:scale-95 whitespace-nowrap" style="background-color: #008000;">
+            Apply Now
+        </button>
+</div>
+<button id="menu-toggle" class="md:hidden flex flex-col gap-1 p-2 hover:bg-surface-container rounded-lg transition-colors z-[1000] relative" aria-label="Toggle menu">
+<span class="w-6 h-0.5 bg-on-surface transition-all"></span>
+<span class="w-6 h-0.5 bg-on-surface transition-all"></span>
+<span class="w-6 h-0.5 bg-on-surface transition-all"></span>
+</button>
+</nav>
+</header>
+<!-- Full-screen mobile menu -->
+<div id="mobile-menu" aria-hidden="true">
+<div class="px-margin-mobile py-base space-y-base max-w-7xl mx-auto">
+<a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="../../../index.php">Home</a>
+<a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="../../../about.php">About</a>
+<a class="block text-primary font-bold py-sm px-sm rounded-lg transition-all" href="../../../departments.php" style="color: #008000;">Departments</a>
+<details class="group">
+<summary class="cursor-pointer list-none block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all">Resources <span aria-hidden="true">&#9662;</span></summary>
+<a class="ml-md block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="../../../gallery.php">Gallery</a>
+<a class="ml-md block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="../../../resources.php">Resources</a>
+</details>
+<a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="../../../news.php">News</a>
+<a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="../../../contact.php">Contact Us</a>
+<button class="w-full bg-primary text-on-primary font-label-md px-md py-sm rounded-lg hover:shadow-lg transition-all active:scale-95" style="background-color: #008000;">
+            Apply Now
+        </button>
+</div>
+</div>
+<main>
+<!-- Hero Section -->
+<section class="relative h-[450px] flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-black/60 z-10"></div>
+<img class="w-full h-full object-cover" alt="Human Resources team members in a professional meeting setting" src="../hr.jpg"/>
+</div>
+<div class="relative z-20 max-w-7xl mx-auto px-margin-desktop w-full text-white">
+<nav class="flex items-center text-label-md font-label-md mb-md opacity-90">
+<a class="hover:underline" href="../../../index.php">Home</a>
+<span class="breadcrumb-separator"></span>
+<a class="hover:underline" href="../../../departments.php">Departments</a>
+<span class="breadcrumb-separator"></span>
+<span class="font-bold">Human Resources</span>
+</nav>
+<h1 class="font-headline-xl text-headline-xl mb-md max-w-3xl leading-tight">
+                    Human Resources
+                </h1>
+<p class="font-body-lg text-body-lg max-w-2xl text-white/90">
+                    Building and sustaining a capable, motivated, and professional workforce to drive the Ministry's mandate through people-centred HR strategies and staff development.
+                </p>
+</div>
+</section>
+<!-- Functions Grid Section -->
+<section class="py-xl bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-margin-desktop">
+<div class="text-center mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-sm">Our Strategic Mandates</h2>
+<div class="w-16 h-1.5 bg-primary mx-auto rounded-full"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Recruitment & Selection -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">person_search</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Recruitment &amp; Selection</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Manage transparent and merit-based recruitment processes to attract and retain the best talent for the Ministry's mission and objectives.
+                        </p>
+</div>
+<!-- Staff Development -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">school</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Staff Development</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Design and implement training programmes, workshops, and capacity-building initiatives that empower staff to grow professionally.
+                        </p>
+</div>
+<!-- Performance Management -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">leaderboard</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Performance Management</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Implement effective performance appraisal systems to align staff contributions with the Ministry's strategic goals and service delivery standards.
+                        </p>
+</div>
+<!-- Employee Welfare -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">favorite</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Employee Welfare</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Promote a healthy and supportive work environment through employee wellness programmes, counselling, and occupational health initiatives.
+                        </p>
+</div>
+<!-- Labour Relations -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">handshake</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Labour Relations</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Foster harmonious employer-employee relations through fair dispute resolution mechanisms and compliance with labour laws and regulations.
+                        </p>
+</div>
+<!-- HR Policy & Compliance -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">policy</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">HR Policy &amp; Compliance</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Develop, review, and enforce HR policies and procedures that ensure compliance with the Public Service Act and other relevant legislation.
+                        </p>
+</div>
+<!-- Payroll Administration -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">payments</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Payroll Administration</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Ensure accurate and timely management of staff remuneration, allowances, and benefits in line with government pay structures.
+                        </p>
+</div>
+<!-- Succession Planning -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">trending_up</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Succession Planning</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Identify and groom future leaders within the Ministry to ensure continuity of service delivery and institutional knowledge retention.
+                        </p>
+</div>
+<!-- Records Management -->
+<div class="bento-card bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:border-primary group">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">folder_shared</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Records Management</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Maintain comprehensive and secure personnel records systems that support informed decision-making and organizational accountability.
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Decorative Section with Call to Action -->
+<section class="relative py-xl overflow-hidden bg-primary">
+<div class="relative z-10 max-w-7xl mx-auto px-margin-desktop text-center text-white">
+<h2 class="font-headline-lg text-headline-lg mb-md">Join Our Professional Team</h2>
+<p class="font-body-lg text-body-lg mb-lg max-w-2xl mx-auto opacity-90">
+                    We are always looking for dedicated and talented professionals to join our mission. Explore current vacancies and opportunities to contribute to national youth development.
+                </p>
+<div class="flex flex-wrap justify-center gap-md">
+<button class="bg-white text-primary px-xl py-md font-label-md text-label-md rounded-full font-bold shadow-lg hover:bg-surface-variant transition-all">
+                        View Vacancies
+                    </button>
+<button class="border-2 border-white text-white px-xl py-md font-label-md text-label-md rounded-full font-bold hover:bg-white/10 transition-all">
+                        HR Resources
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#008000] text-on-primary">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg px-margin-mobile lg:px-margin-desktop py-xl w-full max-w-7xl mx-auto align-middle">
+<!-- Brand & Contact -->
+<div class="flex flex-col gap-md">
+<div class="flex items-center gap-sm">
+<img alt="Zimbabwe Coat of Arms" class="h-14 md:h-20 w-auto object-contain invert brightness-0" src="../../../assets/logo.png"/>
+</div>
+<div class="space-y-sm">
+<p class="font-body-md opacity-90">11th Floor Central House, Central Avenue, Harare, Zimbabwe</p>
+<div class="flex items-center gap-base opacity-90">
+<span class="material-symbols-outlined text-sm">mail</span>
+<span>info@youth.gov.zw</span>
+</div>
+<div class="flex items-center gap-base opacity-90">
+<span class="material-symbols-outlined text-sm">call</span>
+<span>+263 242 707741</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-md mt-base">
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="Facebook">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="WhatsApp">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.42 9.864-9.864.002-2.637-1.03-5.114-2.905-6.99C16.559 1.875 14.09 1.83 11.45 1.83c-5.437 0-9.862 4.421-9.866 9.865-.001 1.761.47 3.483 1.365 5.011L1.92 21.05l4.727-1.24.001-.004-.001-.002zm12.317-5.908c-.3-.15-1.772-.875-2.046-.975-.275-.1-.475-.15-.675.15-.2.3-.775 1.025-.95 1.225-.175.2-.35.225-.65.075-.3-.15-1.265-.467-2.41-1.485-.89-.794-1.49-1.775-1.665-2.075-.175-.3-.02-.463.13-.612.135-.135.3-.35.45-.525.15-.175.2-.3.3-.5s.05-.375-.025-.525c-.075-.15-.675-1.625-.925-2.225-.244-.589-.48-.58-.675-.59-.175-.01-.375-.01-.575-.01-.2 0-.525.075-.8.375-.275.3-1.05 1.025-1.05 2.5s1.025 2.9 1.175 3.1c.15.2 2.013 3.074 4.875 4.31.68.295 1.21.47 1.62.6.685.217 1.31.187 1.805.113.55-.082 1.772-.725 2.022-1.4.25-.675.25-1.25.175-1.375-.075-.125-.275-.2-.575-.35z"/></svg>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="X (Twitter)">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="Instagram">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#" aria-label="LinkedIn">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+</a>
+</div>
+</div>
+<!-- Quick Links -->
+<div class="flex flex-col gap-md">
+<span class="font-title-lg text-title-lg border-b border-white/20 pb-base">Quick Links</span>
+<div class="flex flex-col gap-sm">
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="../../../index.php">Home</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="../../../about.php">About Us</a>
+<a class="text-on-primary font-bold underline" href="../../../departments.php">Departments</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="../../../gallery.php">Gallery</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="../../../resources.php">Resources</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="../../../news.php">News</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="../../../contact.php">Contact Us</a>
+</div>
+</div>
+<!-- Resources -->
+<div class="flex flex-col gap-md">
+<span class="font-title-lg text-title-lg border-b border-white/20 pb-base">Resources</span>
+<div class="flex flex-col gap-sm">
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#">National Youth Policy</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#">Strategic Plan 2024-2030</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#">VTC Enrollment Forms</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#">Annual Reports</a>
+</div>
+</div>
+<!-- Newsletter -->
+<div class="flex flex-col gap-md">
+<span class="font-title-lg text-title-lg border-b border-white/20 pb-base">Newsletter</span>
+<p class="text-sm opacity-90">Stay updated with the latest youth empowerment programs and events.</p>
+<div class="flex flex-col gap-base">
+<input class="bg-white/10 border border-white/20 rounded-lg px-md py-sm text-white placeholder:text-white/40 focus:ring-primary-fixed focus:border-primary-fixed transition-all" placeholder="Email Address" type="email"/>
+<button class="bg-[#ccffba] text-[#002200] font-bold py-sm rounded-lg hover:brightness-110 active:scale-95 transition-all">Subscribe</button>
+</div>
+</div>
+</div>
+<!-- Copyright -->
+<div class="border-t border-white/10 py-md text-center text-on-primary/60 font-label-sm">
+        Copyright &copy; 2025 Ministry of Youth Empowerment. All rights reserved.
+    </div>
+</footer>
+<script>
+    // Full-screen mobile menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let menuOpen = false;
+
+    menuToggle.addEventListener('click', function() {
+        menuOpen = !menuOpen;
+        mobileMenu.classList.toggle('open', menuOpen);
+        mobileMenu.setAttribute('aria-hidden', !menuOpen);
+        document.body.style.overflow = menuOpen ? 'hidden' : '';
+        const spans = this.querySelectorAll('span');
+        spans[0].style.transform = menuOpen ? 'rotate(45deg) translateY(8px)' : '';
+        spans[1].style.opacity = menuOpen ? '0' : '1';
+        spans[2].style.transform = menuOpen ? 'rotate(-45deg) translateY(-8px)' : '';
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            menuOpen = false;
+            mobileMenu.classList.remove('open');
+            mobileMenu.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            const spans = menuToggle.querySelectorAll('span');
+            spans[0].style.transform = '';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = '';
+        });
+    });
+
+    // Sticky header effect
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+            header.classList.add('py-2', 'shadow-lg', 'bg-white/95', 'backdrop-blur-md');
+        } else {
+            header.classList.remove('py-2', 'shadow-lg', 'bg-white/95', 'backdrop-blur-md');
+        }
+    });
+</script>
+<script src="../../../assets/js/site-nav.js"></script>
+</body></html>

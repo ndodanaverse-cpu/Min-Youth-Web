@@ -1,0 +1,637 @@
+<?php require_once __DIR__ . '/includes/lang.php'; ?>
+<!DOCTYPE html>
+
+<html class="light" lang="<?= htmlspecialchars($GLOBALS['current_lang'] ?? 'en', ENT_QUOTES, 'UTF-8') ?>"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<!-- Standard Favicon for Browser Tabs (ICO file) -->
+<link rel="icon" type="image/x-icon" href="assets/icon.png">
+
+<!-- Modern, High-Quality Icon for Modern Browsers (PNG file) -->
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icon.png">
+
+<!-- Apple Touch Icon for iOS Devices (iPhones/iPads) -->
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icon.png">
+
+<!-- Android/Chrome Web App Manifest -->
+<link rel="manifest" href="assets/site.webmanifest">
+
+<title><?= __('contact_heading') ?> | <?= __('site_title') ?></title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "inverse-primary": "#72de5e",
+                "background": "#f9f9ff",
+                "primary-fixed-dim": "#72de5e",
+                "outline": "#6f7a69",
+                "tertiary-container": "#677069",
+                "surface-dim": "#d3daea",
+                "on-surface": "#151c27",
+                "secondary-container": "#e2dfe0",
+                "surface-container-lowest": "#ffffff",
+                "secondary": "#5f5e5f",
+                "on-secondary-fixed": "#1b1b1c",
+                "on-tertiary-fixed": "#151d18",
+                "on-primary-fixed-variant": "#005300",
+                "error-container": "#ffdad6",
+                "surface-tint": "#006e00",
+                "surface-container": "#e7eefe",
+                "secondary-fixed": "#e5e2e3",
+                "on-error": "#ffffff",
+                "surface-container-low": "#f0f3ff",
+                "surface-container-high": "#e2e8f8",
+                "surface-variant": "#dce2f3",
+                "on-surface-variant": "#3f4a3a",
+                "primary-fixed": "#8dfb77",
+                "on-primary-container": "#ccffba",
+                "surface-bright": "#f9f9ff",
+                "on-tertiary-fixed-variant": "#404943",
+                "inverse-on-surface": "#ebf1ff",
+                "surface-container-highest": "#dce2f3",
+                "on-background": "#151c27",
+                "inverse-surface": "#2a313d",
+                "on-secondary": "#ffffff",
+                "outline-variant": "#becab6",
+                "on-secondary-fixed-variant": "#474647",
+                "error": "#ba1a1a",
+                "surface": "#f9f9ff",
+                "on-primary-fixed": "#002200",
+                "primary": "#008000",
+                "on-secondary-container": "#636263",
+                "on-error-container": "#93000a",
+                "tertiary-fixed-dim": "#c0c9c0",
+                "on-tertiary": "#ffffff",
+                "tertiary": "#4f5851",
+                "tertiary-fixed": "#dce5dc",
+                "primary-container": "#008000",
+                "on-primary": "#ffffff",
+                "on-tertiary-container": "#ebf4eb",
+                "secondary-fixed-dim": "#c8c6c7"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "gutter": "24px",
+                "md": "16px",
+                "margin-mobile": "16px",
+                "xl": "40px",
+                "sm": "8px",
+                "margin-desktop": "64px",
+                "lg": "24px",
+                "base": "4px",
+                "xs": "4px"
+        },
+        "fontFamily": {
+                "headline-xl": ["Poppins"],
+                "headline-lg-mobile": ["Poppins"],
+                "headline-xl-mobile": ["Poppins"],
+                "body-md": ["Poppins"],
+                "label-sm": ["Poppins"],
+                "label-md": ["Poppins"],
+                "headline-lg": ["Poppins"],
+                "body-lg": ["Poppins"],
+                "headline-md": ["Poppins"],
+                "display-lg": ["Poppins"],
+                "title-lg": ["Poppins"]
+        },
+        "fontSize": {
+                "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "headline-xl-mobile": ["30px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}]
+        }
+      },
+    },
+  }
+</script>
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    body {
+        background-color: #f9f9ff;
+        font-family: 'Poppins', sans-serif;
+        overflow-x: hidden;
+    }
+    .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .hover-lift {
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    }
+    .hover-lift:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px -10px rgba(0, 128, 0, 0.15);
+        border-color: #008000;
+    }
+    .nav-link-active {
+        position: relative;
+        color: #008000;
+        font-weight: 700;
+    }
+    .nav-link-active::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #008000;
+        border-radius: 2px;
+    }
+    .btn-transition {
+        transition: all 0.2s ease-in-out;
+    }
+    .btn-transition:active {
+        transform: scale(0.97);
+    }
+    .form-focus-transition {
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+        /* Full-screen mobile menu overlay */
+        #mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fcf9f8;
+            z-index: 999;
+            transform: translateX(-100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            padding-top: 80px;
+        }
+        #mobile-menu.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- TopNavBar -->
+<header class="bg-surface docked full-width top-0 sticky border-b border-outline-variant shadow-sm z-50 transition-all duration-300">
+<nav class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-base w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-base">
+<img alt="Zimbabwe Government Logo" class="h-8 md:h-16 w-auto transition-transform hover:scale-105" src="assets/logo.png"/>
+</div>
+<div class="hidden md:flex items-center gap-md">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="index.php">
+                Home
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+</a>
+<div class="relative group">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative py-1 inline-flex items-center gap-1" href="about.php">
+                About Us <span aria-hidden="true">&#9662;</span>
+</a>
+<div class="absolute left-0 top-full hidden min-w-36 pt-2 group-hover:block group-focus-within:block">
+<a class="block bg-surface px-md py-sm text-on-surface-variant font-medium shadow-lg hover:bg-surface-container-high hover:text-primary" href="about.php">About Us</a>
+<a class="block bg-surface px-md py-sm text-on-surface-variant font-medium shadow-lg hover:bg-surface-container-high hover:text-primary" href="contact.php">Contact Us</a>
+</div>
+</div>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="departments.php">
+                Departments
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+</a>
+<div class="relative group">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative py-1 inline-flex items-center gap-1" href="resources.php">
+                Resources <span aria-hidden="true">&#9662;</span>
+</a>
+<div class="absolute left-0 top-full hidden min-w-36 pt-2 group-hover:block group-focus-within:block">
+<a class="block bg-surface px-md py-sm text-on-surface-variant font-medium shadow-lg hover:bg-surface-container-high hover:text-primary" href="gallery.php">Gallery</a>
+</div>
+</div>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all relative group py-1" href="news.php">
+                News
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+</a>
+</div>
+<div class="hidden md:flex items-center gap-base">
+<a href="http://127.0.0.1:8000" target="_blank" rel="noopener noreferrer" class="bg-primary text-on-primary font-label-md px-md py-xs rounded-lg hover:shadow-lg transition-all active:scale-95 whitespace-nowrap inline-flex items-center justify-center" style="background-color: #008000;">
+            Portal
+        </a>
+</div>
+<button id="menu-toggle" class="md:hidden flex flex-col gap-1 p-2 hover:bg-surface-container rounded-lg transition-colors z-[1000] relative" aria-label="Toggle menu">
+<span class="w-6 h-0.5 bg-on-surface transition-all"></span>
+<span class="w-6 h-0.5 bg-on-surface transition-all"></span>
+<span class="w-6 h-0.5 bg-on-surface transition-all"></span>
+</button>
+</nav>
+</header>
+<!-- Full-screen mobile menu -->
+<div id="mobile-menu" aria-hidden="true">
+<div class="px-margin-mobile py-base space-y-base max-w-7xl mx-auto">
+<a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="index.php">Home</a>
+<details class="group">
+<summary class="cursor-pointer list-none block text-primary font-bold py-sm px-sm rounded-lg transition-all" style="color:#008000">About Us <span aria-hidden="true">&#9662;</span></summary>
+<a class="ml-md block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="about.php">About Us</a>
+<a class="ml-md block text-primary font-bold py-sm px-sm rounded-lg transition-all" href="contact.php" style="color:#008000">Contact Us</a>
+</details>
+<a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="departments.php">Departments</a>
+<details class="group">
+<summary class="cursor-pointer list-none block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all">Resources <span aria-hidden="true">&#9662;</span></summary>
+<a class="ml-md block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="gallery.php">Gallery</a>
+<a class="ml-md block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="resources.php">Resources</a>
+</details>
+<a class="block text-on-surface-variant font-medium hover:text-primary py-sm px-sm rounded-lg hover:bg-surface-container-high transition-all" href="news.php">News</a>
+<a href="http://127.0.0.1:8000" target="_blank" rel="noopener noreferrer" class="w-full bg-primary text-on-primary font-label-md px-md py-sm rounded-lg hover:shadow-lg transition-all active:scale-95 inline-flex items-center justify-center text-center" style="background-color: #008000;">
+            Portal
+        </a>
+</div>
+</div>
+<script>
+    // Full-screen mobile menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let menuOpen = false;
+
+    menuToggle.addEventListener('click', function() {
+        menuOpen = !menuOpen;
+        mobileMenu.classList.toggle('open', menuOpen);
+        mobileMenu.setAttribute('aria-hidden', !menuOpen);
+        document.body.style.overflow = menuOpen ? 'hidden' : '';
+        const spans = this.querySelectorAll('span');
+        spans[0].style.transform = menuOpen ? 'rotate(45deg) translateY(8px)' : '';
+        spans[1].style.opacity = menuOpen ? '0' : '1';
+        spans[2].style.transform = menuOpen ? 'rotate(-45deg) translateY(-8px)' : '';
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            menuOpen = false;
+            mobileMenu.classList.remove('open');
+            mobileMenu.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            const spans = menuToggle.querySelectorAll('span');
+            spans[0].style.transform = '';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = '';
+        });
+    });
+
+</script>
+<main>
+<!-- Hero Section -->
+<section class="relative h-64 md:h-80 w-full overflow-hidden flex items-center justify-center">
+<div class="absolute inset-0 z-0">
+<img alt="A vocational training center in Zimbabwe" class="w-full h-full object-cover brightness-50 scale-105 animate-[pulse_10s_ease-in-out_infinite]" src="assets/contact/01JV7D9W77JK90T9D9S63AACNE.jpg"/>
+</div>
+<div class="relative z-10 h-full flex flex-col justify-center items-center text-center px-margin-mobile reveal active">
+<h1 class="font-display-lg text-display-lg text-white text-shadow-sm mb-base">Contact Us</h1>
+<nav class="flex items-center gap-xs text-white/90 font-label-md text-label-md">
+<a class="hover:underline transition-all" href="index.php">Home</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="font-bold">Contact Us</span>
+</nav>
+</div>
+</section>
+<!-- Regional Offices Grid -->
+<section class="px-margin-mobile md:px-margin-desktop py-xl w-full max-w-7xl mx-auto">
+<div class="text-center mb-lg reveal">
+<h3 class="font-headline-lg text-headline-lg text-primary mb-sm">Contact Our Regional Offices</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto">Find the nearest office and get in touch with us today! We are here to support your journey towards empowerment.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg reveal">
+<!-- Card 1: Bulawayo -->
+<div class="office-card hover-lift bg-white border border-outline-variant p-lg rounded-xl transition-all">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-primary text-3xl">location_on</span>
+<h4 class="font-title-lg text-title-lg text-primary font-bold">Bulawayo</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md leading-relaxed min-h-[60px]">
+                        Mhlahlandlela Government Complex, 10th Floor, Bulawayo
+                    </p>
+<div class="flex items-center gap-sm border-t border-outline-variant pt-md">
+<span class="material-symbols-outlined text-primary text-xl">phone_iphone</span>
+<p class="font-label-md text-on-surface font-bold">Phone: <span class="font-normal text-on-surface-variant">0772 458 214 / 0292 235 467</span></p>
+</div>
+</div>
+<!-- Card 2: Harare -->
+<div class="office-card hover-lift bg-white border border-outline-variant p-lg rounded-xl transition-all">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-primary text-3xl">location_on</span>
+<h4 class="font-title-lg text-title-lg text-primary font-bold">Harare</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md leading-relaxed min-h-[60px]">
+                        12th Floor, Makombe Building, Cnr Herbert Chitepo &amp; Leopold Takawira
+                    </p>
+<div class="flex items-center gap-sm border-t border-outline-variant pt-md">
+<span class="material-symbols-outlined text-primary text-xl">phone_iphone</span>
+<p class="font-label-md text-on-surface font-bold">Phone: <span class="font-normal text-on-surface-variant">0773 654 782 / 0242 708 341</span></p>
+</div>
+</div>
+<!-- Card 3: Masvingo -->
+<div class="office-card hover-lift bg-white border border-outline-variant p-lg rounded-xl transition-all">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-primary text-3xl">location_on</span>
+<h4 class="font-title-lg text-title-lg text-primary font-bold">Masvingo</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md leading-relaxed min-h-[60px]">
+                        Benjamin Burombo Building, 3rd Floor, Masvingo
+                    </p>
+<div class="flex items-center gap-sm border-t border-outline-variant pt-md">
+<span class="material-symbols-outlined text-primary text-xl">phone_iphone</span>
+<p class="font-label-md text-on-surface font-bold">Phone: <span class="font-normal text-on-surface-variant">0771 234 567 / 0392 264 512</span></p>
+</div>
+</div>
+<!-- Card 4: Midlands -->
+<div class="office-card hover-lift bg-white border border-outline-variant p-lg rounded-xl transition-all">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-primary text-3xl">location_on</span>
+<h4 class="font-title-lg text-title-lg text-primary font-bold">Midlands</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md leading-relaxed min-h-[60px]">
+                        Government Complex, Gweru
+                    </p>
+<div class="flex items-center gap-sm border-t border-outline-variant pt-md">
+<span class="material-symbols-outlined text-primary text-xl">phone_iphone</span>
+<p class="font-label-md text-on-surface font-bold">Phone: <span class="font-normal text-on-surface-variant">0712 987 654 / 0542 223 344</span></p>
+</div>
+</div>
+<!-- Card 5: Mutare -->
+<div class="office-card hover-lift bg-white border border-outline-variant p-lg rounded-xl transition-all">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-primary text-3xl">location_on</span>
+<h4 class="font-title-lg text-title-lg text-primary font-bold">Manicaland</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md leading-relaxed min-h-[60px]">
+                        Government Complex, Mutare
+                    </p>
+<div class="flex items-center gap-sm border-t border-outline-variant pt-md">
+<span class="material-symbols-outlined text-primary text-xl">phone_iphone</span>
+<p class="font-label-md text-on-surface font-bold">Phone: <span class="font-normal text-on-surface-variant">0772 321 654 / 0202 654 321</span></p>
+</div>
+</div>
+<!-- Card 5: Mutare -->
+<div class="office-card hover-lift bg-white border border-outline-variant p-lg rounded-xl transition-all">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-primary text-3xl">location_on</span>
+<h4 class="font-title-lg text-title-lg text-primary font-bold">Manicaland</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md leading-relaxed min-h-[60px]">
+                        Government Complex, Mutare
+                    </p>
+<div class="flex items-center gap-sm border-t border-outline-variant pt-md">
+<span class="material-symbols-outlined text-primary text-xl">phone_iphone</span>
+<p class="font-label-md text-on-surface font-bold">Phone: <span class="font-normal text-on-surface-variant">0772 321 654 / 0202 654 321</span></p>
+</div>
+</div>
+<!-- Card 5: Mutare -->
+<div class="office-card hover-lift bg-white border border-outline-variant p-lg rounded-xl transition-all">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-primary text-3xl">location_on</span>
+<h4 class="font-title-lg text-title-lg text-primary font-bold">Manicaland</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md leading-relaxed min-h-[60px]">
+                        Government Complex, Mutare
+                    </p>
+<div class="flex items-center gap-sm border-t border-outline-variant pt-md">
+<span class="material-symbols-outlined text-primary text-xl">phone_iphone</span>
+<p class="font-label-md text-on-surface font-bold">Phone: <span class="font-normal text-on-surface-variant">0772 321 654 / 0202 654 321</span></p>
+</div>
+</div>
+<!-- Card 5: Mutare -->
+<div class="office-card hover-lift bg-white border border-outline-variant p-lg rounded-xl transition-all">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-primary text-3xl">location_on</span>
+<h4 class="font-title-lg text-title-lg text-primary font-bold">Manicaland</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md leading-relaxed min-h-[60px]">
+                        Government Complex, Mutare
+                    </p>
+<div class="flex items-center gap-sm border-t border-outline-variant pt-md">
+<span class="material-symbols-outlined text-primary text-xl">phone_iphone</span>
+<p class="font-label-md text-on-surface font-bold">Phone: <span class="font-normal text-on-surface-variant">0772 321 654 / 0202 654 321</span></p>
+</div>
+</div>
+<!-- Card 5: Mutare -->
+<div class="office-card hover-lift bg-white border border-outline-variant p-lg rounded-xl transition-all">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-primary text-3xl">location_on</span>
+<h4 class="font-title-lg text-title-lg text-primary font-bold">Manicaland</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md leading-relaxed min-h-[60px]">
+                        Government Complex, Mutare
+                    </p>
+<div class="flex items-center gap-sm border-t border-outline-variant pt-md">
+<span class="material-symbols-outlined text-primary text-xl">phone_iphone</span>
+<p class="font-label-md text-on-surface font-bold">Phone: <span class="font-normal text-on-surface-variant">0772 321 654 / 0202 654 321</span></p>
+</div>
+</div>
+<!-- Card 6: Mashonaland West -->
+<div class="office-card hover-lift bg-white border border-outline-variant p-lg rounded-xl transition-all">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-primary text-3xl">location_on</span>
+<h4 class="font-title-lg text-title-lg text-primary font-bold">Mashonaland West</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md leading-relaxed min-h-[60px]">
+                        Government Complex, Chinhoyi
+                    </p>
+<div class="flex items-center gap-sm border-t border-outline-variant pt-md">
+<span class="material-symbols-outlined text-primary text-xl">phone_iphone</span>
+<p class="font-label-md text-on-surface font-bold">Phone: <span class="font-normal text-on-surface-variant">0782 111 222 / 0672 234 56</span></p>
+</div>
+</div>
+</div>
+</section>
+<!-- Form & Map Split Screen -->
+<section class="grid grid-cols-1 lg:grid-cols-2 min-h-[600px] bg-white border-t border-outline-variant">
+<!-- Left Side: Form -->
+<div class="px-margin-mobile md:px-margin-desktop py-xl flex flex-col justify-center reveal">
+<div class="max-w-md mx-auto w-full">
+<h3 class="font-headline-lg text-headline-lg text-primary mb-md">Send Us a Message</h3>
+<form class="space-y-md" action="https://formspree.io/f/{form_id}" method="post">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Your Name</label>
+<input class="w-full bg-surface border border-outline-variant rounded-lg px-md py-3 form-focus-transition focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none" placeholder="Enter your name" type="text"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Your Email</label>
+<input class="w-full bg-surface border border-outline-variant rounded-lg px-md py-3 form-focus-transition focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none" placeholder="Enter your email" type="email"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Phone Number</label>
+<input class="w-full bg-surface border border-outline-variant rounded-lg px-md py-3 form-focus-transition focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none" placeholder="Enter your phone number" type="tel"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Your Message</label>
+<textarea class="w-full bg-surface border border-outline-variant rounded-lg px-md py-3 form-focus-transition focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none resize-none" placeholder="Write your message here" rows="4"></textarea>
+</div>
+<button class="w-full bg-primary py-4 text-white font-bold rounded-lg shadow-lg shadow-primary/20 hover:shadow-xl hover:bg-primary-container transition-all flex items-center justify-center gap-sm btn-transition" type="submit">
+                            Send Message
+                            <span class="material-symbols-outlined text-xl">send</span>
+</button>
+</form>
+</div>
+</div>
+<!-- Right Side: Map -->
+<div class="relative h-[450px] lg:h-auto overflow-hidden reveal">
+  <div class="absolute inset-0 bg-surface-container flex items-center justify-center">
+    
+    <!-- Interactive Google Map Frame -->
+    <div class="w-full h-full grayscale-[0.3] opacity-90 transition-all duration-700 hover:grayscale-0">
+      <iframe 
+        class="w-full h-full border-0"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3798.2429440623263!2d31.0505118!3d-17.8273611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1931a4e1645035e1%3A0x493416b0743b171d!2sCentral%20Ave%2C%20Harare!5e0!3m2!1sen!2szw!4v1710000000000!5m2!1sen!2szw"
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+    
+    <!-- Retained floating Head Office indicator badge over the live iframe map -->
+    <div class="absolute top-md right-md z-30 transform hover:scale-110 transition-transform duration-300 pointer-events-none">
+      <div class="bg-white px-md py-sm rounded-lg shadow-2xl border border-outline-variant flex items-center gap-sm">
+        <span class="material-symbols-outlined text-primary animate-pulse">my_location</span>
+        <span class="font-label-md text-on-surface font-bold">Head Office</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#008000] text-on-primary">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg px-margin-mobile lg:px-margin-desktop py-xl w-full max-w-7xl mx-auto align-middle">
+<!-- Brand & Contact -->
+<div class="flex flex-col gap-md">
+<div class="flex items-center gap-sm">
+<img alt="Zimbabwe Coat of Arms" class="h-14 md:h-20 w-auto object-contain invert brightness-0" src="assets/logo.png"/>
+</div>
+<div class="space-y-sm">
+<p class="font-body-md opacity-90">11th Floor Central House, Central Avenue, Harare, Zimbabwe</p>
+<div class="flex items-center gap-base opacity-90">
+<span class="material-symbols-outlined text-sm">mail</span>
+<span>info@youth.gov.zw</span>
+</div>
+<div class="flex items-center gap-base opacity-90">
+<span class="material-symbols-outlined text-sm">call</span>
+<span>+263 242 707741</span>
+</div>
+</div>
+<div class="flex gap-md mt-base">
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#">
+<svg class="w-5 h-5 fill-current" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110" href="#">
+<svg class="w-5 h-5 fill-current" viewbox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.84 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg>
+</a>
+</div>
+</div>
+<!-- Quick Links -->
+<div class="flex flex-col gap-md">
+<span class="font-title-lg text-title-lg border-b border-white/20 pb-base">Quick Links</span>
+<div class="flex flex-col gap-sm">
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="index.php">Home</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="about.php">About Us</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="departments.php">Departments</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="gallery.php">Gallery</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="resources.php">Resources</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="news.php">News</a>
+<a class="text-on-primary font-bold underline" href="contact.php">Contact Us</a>
+</div>
+</div>
+<!-- Resources -->
+<div class="flex flex-col gap-md">
+<span class="font-title-lg text-title-lg border-b border-white/20 pb-base">Resources</span>
+<div class="flex flex-col gap-sm">
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#">National Youth Policy</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#">Strategic Plan 2024-2030</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#">VTC Enrollment Forms</a>
+<a class="text-on-primary/80 hover:text-white transition-colors hover:translate-x-1" href="#">Annual Reports</a>
+</div>
+</div>
+<!-- Newsletter -->
+<div class="flex flex-col gap-md">
+<span class="font-title-lg text-title-lg border-b border-white/20 pb-base">Newsletter</span>
+<p class="text-sm opacity-90">Stay updated with the latest youth empowerment programs and events.</p>
+<div class="flex flex-col gap-base">
+<input class="bg-white/10 border-white/20 rounded-lg px-md py-sm text-white placeholder:text-white/40 focus:ring-primary-fixed focus:border-primary-fixed transition-all" placeholder="Email Address" type="email"/>
+<button class="bg-[#ccffba] text-[#002200] font-bold py-sm rounded-lg hover:brightness-110 active:scale-95 transition-all">Subscribe</button>
+</div>
+</div>
+</div>
+<!-- Copyright -->
+<div class="border-t border-white/10 py-md text-center text-on-primary/60 font-label-sm">
+        Copyright © 2025 Ministry of Youth Empowerment. All rights reserved.
+    </div>
+</footer>
+<script>
+        // Scroll Reveal Interaction
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Form submission micro-interaction
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Sending...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Message Sent!';
+                btn.classList.remove('bg-primary');
+                btn.classList.add('bg-green-600');
+                e.target.reset();
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('bg-green-600');
+                    btn.classList.add('bg-primary');
+                    btn.disabled = false;
+                }, 3000);
+            }, 1500);
+        });
+
+        // Navigation scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 20) {
+                nav.classList.add('py-1', 'shadow-md');
+                nav.classList.remove('py-3');
+            } else {
+                nav.classList.add('py-3');
+                nav.classList.remove('py-1', 'shadow-md');
+            }
+        });
+    </script>
+<script src="assets/js/minyouth-widget.js?v=20260820b" defer></script>
+<script src="assets/js/site-nav.js"></script>
+</body></html>
